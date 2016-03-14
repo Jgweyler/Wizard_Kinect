@@ -2,12 +2,16 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-    public GameObject player;
 
+    private GameObject player;
     float distance = 3f;
 
-	// Use this for initialization
+    void Awake() {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
 	void Start () {
+
     }
 	
 	// Update is called once per frame

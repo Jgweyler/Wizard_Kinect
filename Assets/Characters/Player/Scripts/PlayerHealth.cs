@@ -6,21 +6,19 @@ public class PlayerHealth : MonoBehaviour {
 
     public float maxHealth = 100f;
     public float currentHealth;
-    public Slider HealthSlider;
-    public Image damageImage;
     public float flashSpeed = 5f; //Velocidad en la que flashea la imagen de daño (damagenImage) en la pantalla.
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f); //El color al que estará seteado la imagen de daño (damageImage) para flashear.
 
-    PlayerMovement playerMovement;                              // Referencia al movimiento del personaje.
-    CastSpell playerCastSpell;                                  // Referencia al casteo de hechizos del personaje.
-    bool isDead;                                                // Si el personaje está muerto.
-    bool damaged;                                               // Cuando el personaje recibe daño.
+    private PlayerMovement playerMovement;                              // Referencia al movimiento del personaje.
+    private CastSpell playerCastSpell;                                  // Referencia al casteo de hechizos del personaje.
+    private GameObject HUDCanvas;                                       //Referencia al canvas que tiene almacenados los elementos gráficos tales como la vida del personaje.
+    private Slider HealthSlider;                                        //Slider que representa la vida del persoanje
+    private Image damageImage;                                          //Imagen que será mostrada milésimas de segundo para indicar que el personaje fue dañado.
+
+    private bool isDead;                                                // Si el personaje está muerto.
+    private bool damaged;                                               // Cuando el personaje recibe daño.
 
     void Awake() {
-        //Inicializamos todas las referencias.
-        playerMovement = GetComponent<PlayerMovement>();
-        playerCastSpell = GetComponentInChildren<CastSpell>();
-
         //Ponemos la vida al máximo cuando se inicialice el script
         currentHealth = maxHealth;
         isDead = false;
@@ -28,8 +26,14 @@ public class PlayerHealth : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-	
-	}
+        //Inicializamos todas las referencias.
+        HUDCanvas = GameObject.FindGameObjectWithTag("HUDCanvas");  //Las referencias al HUDCanvas están en la función Start porque en Awake el HUDCanvas no ha sido
+        damageImage = HUDCanvas.GetComponentInChildren<Image>();    //instanciado todavía.
+        HealthSlider = HUDCanvas.GetComponentInChildren<Slider>();
+
+        playerMovement = GetComponent<PlayerMovement>();
+        playerCastSpell = GetComponentInChildren<CastSpell>();
+    }
 	
 	// Update is called once per frame
 	void Update () {

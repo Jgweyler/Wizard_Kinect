@@ -15,9 +15,6 @@ public class PlayerMovement : MonoBehaviour {
     private float turnInputValue;
     private Quaternion rotation; // Se usará para indicar a la cámara cuánto tiene que girar.
 
-    private bool hasTarget;        //Si el jugador ha fijado un objetivo.
-    private GameObject target;     //Referencia al enemigo que ha marcado el jugador.
-
 
 	// Use this for initialization
 	private void Start () {
@@ -58,9 +55,4 @@ public class PlayerMovement : MonoBehaviour {
         rigidBody.MoveRotation(rigidBody.rotation * rotation);
     }
 
-    private void pointTarget(){ //Fija el objetivo
-        //Puedes usar la funcion de área de daño de los tanques, pero con los enemigos. Solo podrías seleccionar aquellos que sean enemigos.
-        //Si se vuelve a pulsar el boton (o a realizar el evento de marcado), se debería cambiar de objetivo siempre y cuando lo haya.
-        Input.GetMouseButton(1); //Devuelve si se pulso el click derecho.
-    }
 }
