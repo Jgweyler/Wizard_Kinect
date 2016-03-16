@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour {
     public GameObject main_camera;  //Camara del juego.
     public GameObject hudCanvas;    //Elementos gráficos de la pantalla (canvas)
 
-    private GameObject [] enemies;   //Almacena todas las referencias de los enemigos en el juego.
+    private  List<GameObject>enemies;   //Almacena todas las referencias de los enemigos en el juego.
 
     void Awake(){
         Instantiate(terrain, terrain.transform.position, terrain.transform.rotation); //Primero es necesario generar un terreno.
@@ -37,6 +38,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void instanceEnemies(){
+
+        enemies = new List<GameObject>();
+
         Terrain terrainObject = terrain.GetComponent<Terrain>();
         Vector3 terrainSize = terrainObject.terrainData.size;
 
@@ -44,12 +48,18 @@ public class GameManager : MonoBehaviour {
         float max_z = terrainSize.z;
 
         Vector3 randomPos = Vector3.zero;
-        enemies = new GameObject[numEnemies];
+        //enemies = new GameObject[numEnemies];
 
         for (int i = 0; i < numEnemies; i++)
         {
             randomPos = new Vector3(Random.Range(MIN_POS, max_x), Y_POS, Random.Range(MIN_POS, max_z));
-            enemies[i] = Instantiate(enemy, randomPos, enemy.transform.rotation) as GameObject;
+            //enemies[i] = Instantiate(enemy, randomPos, enemy.transform.rotation) as GameObject;
+            GameObject enemigo = Instantiate(enemy, randomPos, enemy.transform.rotation) as GameObject;
+            enemies.Add(enemigo);
         }
+    }
+
+    public List<GameObject> getEnemies(){
+        return enemies;
     }
 }

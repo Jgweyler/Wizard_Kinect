@@ -22,7 +22,7 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("Collision detected with trigger object " + other.name);
+        //Debug.Log("Collision detected with trigger object " + other.name);
         if (other.tag == "Player") {
             player_spotted = true;
         }
@@ -31,7 +31,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("Collision detected with trigger object " + other.name);
+        //Debug.Log("Collision detected with trigger object " + other.name);
         if (other.tag == "Player")
         {
             player_spotted = false;

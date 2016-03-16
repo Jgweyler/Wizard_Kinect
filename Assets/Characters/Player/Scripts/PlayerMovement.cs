@@ -10,10 +10,12 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody rigidBody;
     private string movementAxisName;
     private string movementTurnAxisName;
-    private string markTargetName;
     private float movementInputValue;
     private float turnInputValue;
     private Quaternion rotation; // Se usará para indicar a la cámara cuánto tiene que girar.
+
+    private bool hasTarget;
+    private GameObject playerTarget;
 
 
 	// Use this for initialization
@@ -22,11 +24,13 @@ public class PlayerMovement : MonoBehaviour {
         //Inicializamos los gestores del input y los referenciamos con un nombre.
         movementAxisName = "Vertical";
         movementTurnAxisName = "Horizontal";
-        markTargetName = "Fire2";
         //El valor de giro y de movimiento deberán estar a cero.
         movementInputValue = 0f;
         turnInputValue = 0f;
-	}
+
+        hasTarget = false;
+
+    }
 	
 	// Update is called once per frame
 	private void Update () {
@@ -35,8 +39,13 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
     private void FixedUpdate() {
-        move();
-        turn();
+        if (!hasTarget){
+            move();
+            turn();
+        }
+        else{
+            combatMove();
+        }
     }
 
     private void move(){
@@ -53,6 +62,22 @@ public class PlayerMovement : MonoBehaviour {
 
         // Aplicamos la rotación al rigidbody.
         rigidBody.MoveRotation(rigidBody.rotation * rotation);
+    }
+
+    public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
+        transform.LookAt(playerTarget.transform);
+        transform.Translate(turnInputValue, 0, 0);
+
+    }
+
+    public void setHasTarget(bool hasTarg)
+    {
+        hasTarget = hasTarg;
+    }
+
+    public void setTarget(GameObject tg)
+    {
+        playerTarget = tg;
     }
 
 }
