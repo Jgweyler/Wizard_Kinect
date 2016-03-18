@@ -14,19 +14,24 @@ public class PlayerMovement : MonoBehaviour {
     private float turnInputValue;
     private Quaternion rotation; // Se usará para indicar a la cámara cuánto tiene que girar.
 
+    //Variables necesarias para la fijación de objetivo y combate.
     private bool hasTarget;
     private GameObject playerTarget;
+    private float speedInCombat; //Velocidad de movimiento en combate.
+    private MakeTarget makeTargetScript;
 
 
-	// Use this for initialization
-	private void Start () {
+    // Use this for initialization
+    private void Start () {
         rigidBody = GetComponent< Rigidbody >();
+        makeTargetScript = GetComponent<MakeTarget>();
         //Inicializamos los gestores del input y los referenciamos con un nombre.
         movementAxisName = "Vertical";
         movementTurnAxisName = "Horizontal";
         //El valor de giro y de movimiento deberán estar a cero.
         movementInputValue = 0f;
         turnInputValue = 0f;
+        speedInCombat = 0.10f;
 
         hasTarget = false;
 
@@ -66,7 +71,13 @@ public class PlayerMovement : MonoBehaviour {
 
     public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
         transform.LookAt(playerTarget.transform);
-        transform.Translate(turnInputValue, 0, 0);
+        float move = turnInputValue * speedInCombat;
+            transform.Translate(move, 0, 0);
+
+        //Si el jugador quiere retroceder, automáticamente se cancela la fijación de objetivo.
+        if (movementInputValue < 0) {
+            makeTargetScript.deleteTarget();
+        }
 
     }
 

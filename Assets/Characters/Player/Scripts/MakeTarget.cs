@@ -43,7 +43,7 @@ public class MakeTarget : MonoBehaviour {
     private void searchForEnemies(){ //Busca los enemigos que tenga en sus proximidades para marcar a uno.
     }
 
-    private void addTarget(GameObject tg)
+    public void addTarget(GameObject tg)
     {
         hasTarget = true;
         target = tg;
@@ -51,7 +51,7 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript.setTarget(tg);
     }
 
-    private void deleteTarget()
+    public void deleteTarget()
     {
         hasTarget = false;
         target = null;
