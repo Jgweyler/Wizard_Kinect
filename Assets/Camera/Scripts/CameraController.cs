@@ -4,9 +4,11 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
     private GameObject player;
+    private Vector3 height;
     float distance = 3f;
-
+    
     void Awake() {
+        height = new Vector3(0, 0.8f, 0);
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -18,7 +20,7 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate () {
 
         transform.rotation = player.transform.rotation;
-        transform.position = player.transform.position + distance * -transform.forward;
+        transform.position = player.transform.position + distance * -transform.forward + height;
     }
 
 }

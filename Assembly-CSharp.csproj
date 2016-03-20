@@ -51,6 +51,7 @@
      <Compile Include="Assets\Characters\Player\Scripts\MakeTarget.cs" />
      <Compile Include="Assets\Characters\Player\Scripts\PlayerHealth.cs" />
      <Compile Include="Assets\Characters\Player\Scripts\PlayerMovement.cs" />
+     <Compile Include="Assets\Characters\Player\Scripts\SpellManager.cs" />
      <Compile Include="Assets\GameManager\GameManager.cs" />
      <Compile Include="Assets\Spells\Scripts\EnemySpell.cs" />
      <Compile Include="Assets\Spells\Scripts\Spell.cs" />

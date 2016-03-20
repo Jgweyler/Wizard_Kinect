@@ -49,6 +49,7 @@ public class MakeTarget : MonoBehaviour {
         target = tg;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(tg);
+        playerMovementScript.setTargetRecently(hasTarget);
     }
 
     public void deleteTarget()
