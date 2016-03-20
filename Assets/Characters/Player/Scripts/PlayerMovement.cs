@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour {
 
     //Variables necesarias para la fijación de objetivo y combate.
     private bool hasTarget;
-    private bool targetRecently; //Comprueba si se acaba de marcar el objetivo (Utilizado para indicar al pj que tiene que rotar lentamente para mirar al objetivo)
     private GameObject playerTarget;
     private float speedInCombat; //Velocidad de movimiento en combate.
     private MakeTarget makeTargetScript;
@@ -35,7 +34,6 @@ public class PlayerMovement : MonoBehaviour {
         speedInCombat = 0.10f;
 
         hasTarget = false;
-        targetRecently = false;
 
     }
 	
@@ -46,15 +44,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
     private void FixedUpdate() {
-        /*
-        if (targetRecently)
-        {
-            rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerTarget.transform.position,Vector3.up), speedInCombat * Time.deltaTime);
-            rigidBody.MoveRotation(rigidBody.rotation * rotation);
-            targetRecently = false;
-            Debug.Log("Entro! -> " + hasTarget);
-        }
-        */
 
         if (!hasTarget){
             move();
@@ -82,7 +71,10 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
-        transform.LookAt(playerTarget.transform);
+
+        Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
         float move = turnInputValue * speedInCombat;
             transform.Translate(move, 0, 0);
 
@@ -101,11 +93,6 @@ public class PlayerMovement : MonoBehaviour {
     public void setTarget(GameObject tg)
     {
         playerTarget = tg;
-    }
-
-    public void setTargetRecently(bool tgRc)
-    {
-        targetRecently = tgRc;
     }
 
 }

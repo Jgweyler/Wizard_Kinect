@@ -5,6 +5,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     private GameObject player; //Referencia del jugador.
     private bool player_spotted = false; //Determina si este enemigo está viendo al jugador.
+    private float speed = 12f;
 
     // Use this for initialization
     void Awake() {
@@ -39,6 +40,8 @@ public class EnemyBehavior : MonoBehaviour {
     }
 
     void LookOutPlayer(){
-        transform.LookAt(player.transform);
+        //transform.LookAt(player.transform);
+        Quaternion targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
     }
 }
