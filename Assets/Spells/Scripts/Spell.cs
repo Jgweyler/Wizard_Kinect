@@ -10,6 +10,7 @@ public class Spell : MonoBehaviour
 
     void Start()
     {
+        elementType = SpellManager.currentElement;
         Destroy(gameObject, maxTimeLife); //Indicamos que si el objeto sobrepasa el tiempo de vida, este se destruya.
     }
 
@@ -21,6 +22,15 @@ public class Spell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Te piléee!");
+            int enemyElement = other.gameObject.GetComponent<EnemyBehavior>().getElement();
+            int counterElement = SpellManager.getCounterElement(enemyElement);
+            Debug.Log("Player: " + elementType + " Enemigo= " + enemyElement + " Counter: " + counterElement);
+            if (elementType == counterElement)
+                other.gameObject.GetComponent<EnemyHealth>().dealDamage();
+        }
         //Comprobar si el hechizo colisiona con algo P.E, un enemigo, y realizar las operaciones oportunas.
     }
 

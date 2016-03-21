@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SpellManager : MonoBehaviour {
 
-    private static int currentElement = 1; //Por defecto empezamos con fuego.
+    public static int currentElement = 1; //Por defecto empezamos con fuego.
     private static int nElements = 6; //Numero de elementos con los que puede sintonizar el jugador.
 
     private CastSpell castSpellScript;
@@ -46,12 +46,12 @@ public class SpellManager : MonoBehaviour {
         Spell spellScript = spell.GetComponent<Spell>();
         switch (currentElement)
         {
-            case fire: rend.sharedMaterial.SetColor("_Color", Color.red); spellScript.setElementType(fire); break;
-            case water: rend.sharedMaterial.SetColor("_Color", Color.blue); spellScript.setElementType(water); break;
-            case thunder: rend.sharedMaterial.SetColor("_Color", Color.yellow); spellScript.setElementType(thunder); break;
-            case stone: rend.sharedMaterial.SetColor("_Color", Color.grey); spellScript.setElementType(stone); break;
-            case wind: rend.sharedMaterial.SetColor("_Color", Color.white); spellScript.setElementType(wind); break;
-            case ice: rend.sharedMaterial.SetColor("_Color", Color.cyan); spellScript.setElementType(ice); break;
+            case fire: rend.sharedMaterial.SetColor("_Color", Color.red); break;
+            case water: rend.sharedMaterial.SetColor("_Color", Color.blue);break;
+            case thunder: rend.sharedMaterial.SetColor("_Color", Color.yellow); break;
+            case stone: rend.sharedMaterial.SetColor("_Color", Color.grey); break;
+            case wind: rend.sharedMaterial.SetColor("_Color", Color.white); break;
+            case ice: rend.sharedMaterial.SetColor("_Color", Color.cyan); break;
             default: break;
         }
         Rigidbody spellInstance = Instantiate(spell, spellTransform.position, spellTransform.rotation) as Rigidbody;
@@ -64,28 +64,49 @@ public class SpellManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            currentElement = 1;
+            currentElement = fire;
         } else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentElement = 2;
+            currentElement = water;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            currentElement = 3;
+            currentElement = thunder;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            currentElement = 4;
+            currentElement = stone;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            currentElement = 5;
+            currentElement = wind;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            currentElement = 6;
+            currentElement = ice;
+        }
+    }
+
+    public static int getCounterElement(int element)
+    {
+        int itsCounter = -1;
+
+        switch (element)
+        {
+            case fire: itsCounter = water; break;
+            case water: itsCounter = thunder; break;
+            case thunder: itsCounter = stone; break;
+            case stone: itsCounter = wind; break;
+            case wind: itsCounter = ice ; break;
+            case ice: itsCounter = fire; break;
+            default: break;
         }
 
-
+        return itsCounter;
+    }
+    
+    public static int getnElements()
+    {
+        return nElements;
     }
 }
