@@ -7,7 +7,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     // Use this for initialization
     void Awake() {
-        element = Random.Range(0, SpellManager.getnElements()); //Inicializa de forma aleatoria el elemento con el que está sintonizado el objetivo.
+        element = Random.Range(1, SpellManager.getnElements()); //Inicializa de forma aleatoria el elemento con el que está sintonizado el objetivo.
     }
 
 	void Start () {

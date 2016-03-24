@@ -33,7 +33,7 @@ public class MakeTarget : MonoBehaviour {
         //Si se vuelve a pulsar el boton (o a realizar el evento de marcado), se debería cambiar de objetivo siempre y cuando lo haya.
         SphereCollider player_range = gameObject.GetComponent<SphereCollider>();
         for (int i = 0; i < enemies.Count; i++) {
-            if (player_range.bounds.Contains(enemies[i].transform.position)){ //Si el enemigo está dentor del rango del jugador, se marca como objetivo.
+            if (enemies[i] !=null && player_range.bounds.Contains(enemies[i].transform.position)){ //Si el enemigo está dentor del rango del jugador, se marca como objetivo.
                 addTarget(enemies[i]);
                 return;
             }

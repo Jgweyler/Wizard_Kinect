@@ -72,16 +72,17 @@ public class PlayerMovement : MonoBehaviour {
 
     public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
 
+        //Si el jugador quiere retroceder o destruye a su objetivo, automáticamente se cancela la fijación de objetivo.
+        if (playerTarget == null || movementInputValue < 0)
+        {
+            makeTargetScript.deleteTarget();
+            return;
+        }
         Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
         float move = turnInputValue * speedInCombat;
             transform.Translate(move, 0, 0);
-
-        //Si el jugador quiere retroceder, automáticamente se cancela la fijación de objetivo.
-        if (movementInputValue < 0) {
-            makeTargetScript.deleteTarget();
-        }
 
     }
 
