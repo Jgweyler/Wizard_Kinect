@@ -10,23 +10,32 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody rigidBody;
     private string movementAxisName;
     private string movementTurnAxisName;
-    private string markTargetName;
     private float movementInputValue;
     private float turnInputValue;
     private Quaternion rotation; // Se usará para indicar a la cámara cuánto tiene que girar.
 
+    //Variables necesarias para la fijación de objetivo y combate.
+    private bool hasTarget;
+    private GameObject playerTarget;
+    private float speedInCombat; //Velocidad de movimiento en combate.
+    private MakeTarget makeTargetScript;
 
-	// Use this for initialization
-	private void Start () {
+
+    // Use this for initialization
+    private void Start () {
         rigidBody = GetComponent< Rigidbody >();
+        makeTargetScript = GetComponent<MakeTarget>();
         //Inicializamos los gestores del input y los referenciamos con un nombre.
         movementAxisName = "Vertical";
         movementTurnAxisName = "Horizontal";
-        markTargetName = "Fire2";
         //El valor de giro y de movimiento deberán estar a cero.
         movementInputValue = 0f;
         turnInputValue = 0f;
-	}
+        speedInCombat = 0.10f;
+
+        hasTarget = false;
+
+    }
 	
 	// Update is called once per frame
 	private void Update () {
@@ -35,8 +44,14 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
     private void FixedUpdate() {
-        move();
-        turn();
+
+        if (!hasTarget){
+            move();
+            turn();
+        }
+        else{
+            combatMove();
+        }
     }
 
     private void move(){
@@ -53,6 +68,32 @@ public class PlayerMovement : MonoBehaviour {
 
         // Aplicamos la rotación al rigidbody.
         rigidBody.MoveRotation(rigidBody.rotation * rotation);
+    }
+
+    public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
+
+        //Si el jugador quiere retroceder o destruye a su objetivo, automáticamente se cancela la fijación de objetivo.
+        if (playerTarget == null || movementInputValue < 0)
+        {
+            makeTargetScript.deleteTarget();
+            return;
+        }
+        Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
+        float move = turnInputValue * speedInCombat;
+            transform.Translate(move, 0, 0);
+
+    }
+
+    public void setHasTarget(bool hasTarg)
+    {
+        hasTarget = hasTarg;
+    }
+
+    public void setTarget(GameObject tg)
+    {
+        playerTarget = tg;
     }
 
 }

@@ -3,42 +3,25 @@ using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour {
 
-    private GameObject player; //Referencia del jugador.
-    private bool player_spotted = false; //Determina si este enemigo está viendo al jugador.
+    private int element; //Elemento con el que está sintonizado este enemigo.
 
     // Use this for initialization
     void Awake() {
-        player = GameObject.FindGameObjectWithTag("Player");
+        element = Random.Range(1, SpellManager.getnElements()); //Inicializa de forma aleatoria el elemento con el que está sintonizado el objetivo.
     }
+
 	void Start () {
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (player_spotted) {
-            LookOutPlayer();
-        }
 	}
 
-    void OnTriggerEnter(Collider other) {
-        Debug.Log("Collision detected with trigger object " + other.name);
-        if (other.tag == "Player") {
-            player_spotted = true;
-        }
-        
-    }
-
-    void OnTriggerExit(Collider other)
+    public int getElement()
     {
-        Debug.Log("Collision detected with trigger object " + other.name);
-        if (other.tag == "Player")
-        {
-            player_spotted = false;
-        }
+        return element;
     }
 
-    void LookOutPlayer(){
-        transform.LookAt(player.transform);
-    }
+
 }

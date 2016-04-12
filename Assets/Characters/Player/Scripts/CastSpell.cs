@@ -11,8 +11,12 @@ public class CastSpell : MonoBehaviour {
     private float chargeSpeed;
     private bool casted;                    //Indica si un hechizo ya fue lanzado.
     public Rigidbody spell;                 //Contendrá el prefab del hechizo.
-    public Transform spellTransform;        //Posición donde se crearán los diferentes hechizos.
+    public Transform spellTransform; //Posición donde se crearán los diferentes hechizos.
 
+    //El mago dispone de diferentes tipos de hechizo
+
+    void Awake() {
+    }
 
     // Use this for initialization
     void Start () {
@@ -28,6 +32,7 @@ public class CastSpell : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        
         // Si se ha alcanzado la fuerza máxima de casteo y el hechizo no se ha lanzado...
         if (currentCastForce >= maxCastForce && !casted)
         {
@@ -58,18 +63,13 @@ public class CastSpell : MonoBehaviour {
         }
     }
 
+
     private void Fire()
     {
         // Seteamos el disparador de casteo, así solo se lanzará el hechizo una vez
         casted = true;
 
-        // Creamos una instancia de un hechizo y lo referenciamos a su correspondiente rigidbody
-        Rigidbody spellInstance =
-            Instantiate(spell, spellTransform.position, spellTransform.rotation) as Rigidbody;
-
-        // Seteamos su velocidad hacia la misma trayectoria que hacia donde está mirando el personaje.
-        spellInstance.velocity = currentCastForce * spellTransform.forward;
-
+        SpellManager.launchSpell(currentCastForce);
         // Volvemos a resetear la fuerza de lanzamiento del hechizo.
         currentCastForce = minCastForce;
     }
