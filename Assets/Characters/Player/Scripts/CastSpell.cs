@@ -10,6 +10,7 @@ public class CastSpell : MonoBehaviour {
     public float maxChargeTime = 0.75f;     //Máximo tiempo en el que se puede aumentar/castear la fuerza del hechizo. (Manteniendo pulsado el boton de lanzamiento del mismo)
     private float chargeSpeed;
     private bool casted;                    //Indica si un hechizo ya fue lanzado.
+	private bool casted_kinect;             //Indica si el hechizo ha sido cargado previamente con Kinect
     public Rigidbody spell;                 //Contendrá el prefab del hechizo.
     public Transform spellTransform; //Posición donde se crearán los diferentes hechizos.
 
@@ -22,6 +23,7 @@ public class CastSpell : MonoBehaviour {
     void Start () {
         chargeSpeed = (maxCastForce - minCastForce) / maxChargeTime;
         spellButton = "Fire1";
+		casted_kinect = false;
     }
     private void OnEnable()
     {
@@ -73,4 +75,16 @@ public class CastSpell : MonoBehaviour {
         // Volvemos a resetear la fuerza de lanzamiento del hechizo.
         currentCastForce = minCastForce;
     }
+
+	public void setCasted_Kinect(bool cast_kinect)
+	{
+		casted_kinect = cast_kinect;
+	}
+
+	public bool getCasted_Kinect()
+	{
+		return casted_kinect;
+	}
 }
+
+

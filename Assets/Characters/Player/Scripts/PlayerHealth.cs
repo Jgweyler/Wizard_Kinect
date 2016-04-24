@@ -81,4 +81,8 @@ public class PlayerHealth : MonoBehaviour {
         playerMovement.enabled = false;
         playerCastSpell.enabled = false;
     }
+
+	public bool isKO(){
+		return isDead;
+	}
 }

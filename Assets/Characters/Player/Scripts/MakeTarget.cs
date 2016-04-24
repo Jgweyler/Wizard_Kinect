@@ -40,6 +40,17 @@ public class MakeTarget : MonoBehaviour {
         }
     }
 
+	public void pointTarget_Kinect(){
+		if (!hasTarget) { //Nos aseguramos de que no tenga un objetivo fijadopara no hacer Iteraciones de forma desmesurada.
+			SphereCollider player_range = gameObject.GetComponent<SphereCollider> ();
+			for (int i = 0; i < enemies.Count; i++) {
+				if (enemies [i] != null && player_range.bounds.Contains (enemies [i].transform.position)) { //Si el enemigo está dentor del rango del jugador, se marca como objetivo.
+					addTarget (enemies [i]);
+					return;
+				}
+			}
+		}
+	}
     private void searchForEnemies(){ //Busca los enemigos que tenga en sus proximidades para marcar a uno.
     }
 
@@ -58,4 +69,8 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(null);
     }
+
+	public bool pointed_target(){ //Devuelve si tiene un enemigo fijado actualmente.
+		return hasTarget;
+	}
 }

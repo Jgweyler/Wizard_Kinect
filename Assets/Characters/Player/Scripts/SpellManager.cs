@@ -4,18 +4,25 @@ using System.Collections;
 public class SpellManager : MonoBehaviour {
 
     public static int currentElement = 1; //Por defecto empezamos con fuego.
+	public static int selectedElement = 1; //Especifica que elemento fue seleccionado por voz en Kinect
     private static int nElements = 6; //Numero de elementos con los que puede sintonizar el jugador.
-
     private CastSpell castSpellScript;
     private static Rigidbody spell;                 //Contendrá el prefab del hechizo.
     private static Transform spellTransform;        //Posición donde se crearán los diferentes hechizos.
 
+	public static int FIRE = 1;
+	public static int WATER = 2;
+	public static int THUNDER = 3;
+	public static int STONE = 4;
+	public static int WIND = 5;
+	public static int ICE = 6;
+
     private const int fire = 1;
-    private const int water = 2;
-    private const int thunder = 3;
-    private const int stone = 4;
-    private const int wind = 5;
-    private const int ice = 6;
+	private const int water = 2;
+	private const int thunder = 3;
+	private const int stone = 4;
+	private const int wind = 5;
+	private const int ice = 6;
 
     void Awake()
     {
@@ -86,6 +93,31 @@ public class SpellManager : MonoBehaviour {
             currentElement = ice;
         }
     }
+
+	public static void switchElement_Kinect(){
+		switch(selectedElement){
+		case fire:
+			currentElement = fire;
+			break;
+		case water:
+			currentElement = water;
+			break;
+		case thunder:
+			currentElement = thunder;
+			break;
+		case wind:
+			currentElement = wind;
+			break;
+		case ice:
+			currentElement = ice;
+			break;
+		case stone:
+			currentElement = stone;
+			break;
+		default:
+			break;
+		}
+	}
 
     public static int getCounterElement(int element)
     {

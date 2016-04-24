@@ -1,0 +1,55 @@
+<grammar version="1.0" xml:lang="es-ES" root="rootRule" tag-format="semantics/1.0-literals" xmlns="http://www.w3.org/2001/06/grammar">
+  <rule id="rootRule">
+    <one-of>
+      <item>
+        <tag>FUEGO</tag>
+        <one-of>
+          <item> fuego </item>
+          <item> calor </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>HIELO</tag>
+        <one-of>
+          <item> hielo </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>RAYO</tag>
+        <one-of>
+          <item> rayo </item>
+          <item> electricidad </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>AGUA</tag>
+        <one-of>
+          <item> agua </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>ROCA</tag>
+        <one-of>
+          <item> roca </item>
+          <item> piedra </item>
+          <item> tierra </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>VIENTO</tag>
+        <one-of>
+          <item> viento </item>
+          <item> aire </item>
+        </one-of>
+      </item>
+      <item>
+        <tag>PAUSA</tag>
+        <one-of>
+          <item> pausa </item>
+          <item> detente </item>
+          <item> salir </item>
+        </one-of>
+      </item>
+   </one-of>
+  </rule>
+</grammar>

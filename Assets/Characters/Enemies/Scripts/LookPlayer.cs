@@ -47,5 +47,9 @@ public class LookPlayer : MonoBehaviour {
         self.transform.rotation = Quaternion.Slerp(self.transform.rotation, targetRotation, speed * Time.deltaTime);
     }
 
+	public bool isPlayerSpotted(){
+		return player_spotted;
+	}
+
 
 }

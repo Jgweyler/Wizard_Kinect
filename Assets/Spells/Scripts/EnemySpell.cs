@@ -22,12 +22,13 @@ public class EnemySpell : MonoBehaviour {
 	}
 
     void OnTriggerEnter(Collider other)
-    {
+	{
         // If the entering collider is the player...
-        if (other.gameObject == player)
+		if (other == player.GetComponentInChildren<BoxCollider>())
         {
             // ... the player is in range.
             playerHealth.TakeDamage(25);
+			Debug.Log ("Jugador alcanzado");
             Destroy(gameObject);
         }
     }

@@ -5,6 +5,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public float speed = 12f;       //Velocidad (Movimiento hacia alante y atrás).
     public float turnSpeed = 180f;  //Velocidad de giro
+	public float moveSpeed_Kinect = 0.5f;
+	private float turnSpeedKinect = 45f; // Velocidad de giro usando Kinect.
+	private const int LEFT = 0;
+	private const int RIGHT = 1;
 
 
     private Rigidbody rigidBody;
@@ -69,6 +73,50 @@ public class PlayerMovement : MonoBehaviour {
         // Aplicamos la rotación al rigidbody.
         rigidBody.MoveRotation(rigidBody.rotation * rotation);
     }
+
+	//Funciones de Kinect
+	public void goBack_Kinect(){
+		if(playerTarget != null){ //Si tiene objetivo asignado, hay que quitarlo.
+			makeTargetScript.deleteTarget();
+		}
+		Vector3 movement = transform.forward * (-moveSpeed_Kinect) * speed * Time.deltaTime;
+		rigidBody.MovePosition(rigidBody.position + movement);
+	}
+
+	public void moveForward_Kinect(){
+		Vector3 movement = transform.forward * moveSpeed_Kinect * speed * Time.deltaTime;
+		rigidBody.MovePosition(rigidBody.position + movement);
+	}
+	public void turnRight_Kinect(){
+		float turn = turnSpeedKinect * Time.deltaTime;
+		rotation = Quaternion.Euler (0f, turn, 0f);
+		rigidBody.MoveRotation (rigidBody.rotation * rotation);
+	}
+
+	public void turnLeft_Kinect(){
+		float turn = -1.0f * (turnSpeedKinect * Time.deltaTime);
+		rotation = Quaternion.Euler (0f, turn, 0f);
+		rigidBody.MoveRotation (rigidBody.rotation * rotation);
+	}
+
+	public void combatMoveKinect(int side){ //0 left, 1 right
+		if (playerTarget == null)
+		{
+			makeTargetScript.deleteTarget();
+			return;
+		}
+		Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+
+		float move;
+		if (side == LEFT) {
+			move = -speedInCombat;
+		} else {
+			move = speedInCombat;
+		}
+		transform.Translate(move, 0, 0);
+	}
+	//Fin de las funciones con Kinect.
 
     public void combatMove() { //El movimiento del personaje cambia a modo de combate si fija objetivo
 
