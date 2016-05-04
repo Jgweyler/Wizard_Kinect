@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
 
     void Awake(){
         Instantiate(terrain, terrain.transform.position, terrain.transform.rotation); //Primero es necesario generar un terreno.
-        Instantiate(player, player.transform.position, player.transform.rotation);    //Creamos al jugador.
+        //Instantiate(player, player.transform.position, player.transform.rotation);    //Creamos al jugador.
         Instantiate(hudCanvas, hudCanvas.transform.position, hudCanvas.transform.rotation);
         Instantiate(main_camera, main_camera.transform.position, main_camera.transform.rotation); //Creamos la cámara del juego. 
 

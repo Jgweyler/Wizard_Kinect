@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class SpellManager : MonoBehaviour {
@@ -7,8 +8,12 @@ public class SpellManager : MonoBehaviour {
 	public static int selectedElement = 1; //Especifica que elemento fue seleccionado por voz en Kinect
     private static int nElements = 6; //Numero de elementos con los que puede sintonizar el jugador.
     private CastSpell castSpellScript;
+	private Image ElementImage; // Imagen del canvas que indica a que elemento actual está sintonizado el jugador.
     private static Rigidbody spell;                 //Contendrá el prefab del hechizo.
     private static Transform spellTransform;        //Posición donde se crearán los diferentes hechizos.
+	private Image [] elementsSelection; //Conjunto de imagenes del canvas que permiten visualizar el elemento seleccionado.
+
+	public Sprite [] sprites;
 
 	public static int FIRE = 1;
 	public static int WATER = 2;
@@ -31,11 +36,24 @@ public class SpellManager : MonoBehaviour {
         spellTransform = castSpellScript.spellTransform;
     }
 	void Start () {
+
+		//Saca todas las imagenes y extrae la que te interesa.!!!!!
+		Image [] imagenes = GameObject.FindGameObjectWithTag ("HealthUI").GetComponentsInChildren<Image>();
+
+		ElementImage = imagenes [2];
+		elementsSelection = new Image [nElements];
+
+		for (int i = 1; i <= nElements; i++){
+			elementsSelection[i -1] = imagenes[2 +i];
+			if (i != 1) {
+				elementsSelection [i - 1].CrossFadeAlpha (0f, 0.2f, true);
+			}
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        SpellManager.switchElementListener();
+        switchElementListener();
     }
 
     public static void changeSpell(int element)
@@ -67,30 +85,48 @@ public class SpellManager : MonoBehaviour {
         spellInstance.velocity = currentCastForce * spellTransform.forward;
     }
 
-    public static void switchElementListener() //
+    private void switchElementListener() //
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            currentElement = fire;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = FIRE;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         } else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentElement = water;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = WATER;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            currentElement = thunder;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = THUNDER;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            currentElement = stone;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = STONE;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            currentElement = wind;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = WIND;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            currentElement = ice;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+            currentElement = ICE;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
         }
     }
 

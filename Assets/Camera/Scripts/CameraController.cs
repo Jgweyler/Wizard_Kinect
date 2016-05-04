@@ -5,10 +5,11 @@ public class CameraController : MonoBehaviour {
 
     private GameObject player;
     private Vector3 height;
-    float distance = 3f;
+    float distance = 30f;
     
     void Awake() {
-        height = new Vector3(0, 0.8f, 0);
+		//transform.position = new Vector3(-0.4f, 17.2f, -23.86f);
+        height = new Vector3(0, 17.2f, 0);
         player = GameObject.FindGameObjectWithTag("Player");
     }
 

@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
     //Variables necesarias para la fijación de objetivo y combate.
     private bool hasTarget;
     private GameObject playerTarget;
+	private Animator playerAnim;
     private float speedInCombat; //Velocidad de movimiento en combate.
     private MakeTarget makeTargetScript;
 
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     // Use this for initialization
     private void Start () {
         rigidBody = GetComponent< Rigidbody >();
+		playerAnim = GetComponent<Animator> ();
         makeTargetScript = GetComponent<MakeTarget>();
         //Inicializamos los gestores del input y los referenciamos con un nombre.
         movementAxisName = "Vertical";
@@ -45,6 +47,18 @@ public class PlayerMovement : MonoBehaviour {
 	private void Update () {
         movementInputValue = Input.GetAxis(movementAxisName);
         turnInputValue = Input.GetAxis(movementTurnAxisName);
+
+		if (movementInputValue > 0) {
+			playerAnim.SetBool ("isMoving", true);
+		} else {
+			playerAnim.SetBool ("isMoving", false);
+		}
+
+		if (turnInputValue != 0) {
+			playerAnim.SetBool ("isTurning", true);
+		} else {
+			playerAnim.SetBool ("isTurning", false);
+		}
 	}
 
     private void FixedUpdate() {
@@ -61,6 +75,7 @@ public class PlayerMovement : MonoBehaviour {
     private void move(){
        Vector3 movement = transform.forward * movementInputValue * speed * Time.deltaTime;
        rigidBody.MovePosition(rigidBody.position + movement);
+	   
     }
 
     private void turn()
@@ -126,10 +141,16 @@ public class PlayerMovement : MonoBehaviour {
             makeTargetScript.deleteTarget();
             return;
         }
+
         Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
         float move = turnInputValue * speedInCombat;
+		if (move != 0f) {
+			playerAnim.SetBool ("isMovingInCombat", true);
+		} else {
+			playerAnim.SetBool ("isMovingInCombat", false);
+		}
             transform.Translate(move, 0, 0);
 
     }

@@ -8,6 +8,7 @@ public class MakeTarget : MonoBehaviour {
     private bool isPointing;       //Indica si se está señalando o designando un objetivo
     private GameObject target;     //Referencia al enemigo que ha marcado el jugador.
     private List<GameObject> enemies;  //Referencia de todos los enemigos en el juego.
+	private Animator playerAnimator;
 
     private GameManager gameManagerScript;
     private PlayerMovement playerMovementScript;
@@ -18,6 +19,7 @@ public class MakeTarget : MonoBehaviour {
     void Start () {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerMovementScript = gameObject.GetComponent<PlayerMovement>();
+		playerAnimator = GetComponent<Animator> ();
         enemies = gameManagerScript.getEnemies();
 	}
 	
@@ -57,6 +59,7 @@ public class MakeTarget : MonoBehaviour {
     public void addTarget(GameObject tg)
     {
         hasTarget = true;
+		playerAnimator.SetBool ("hasTarget", true);
         target = tg;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(tg);
@@ -65,6 +68,7 @@ public class MakeTarget : MonoBehaviour {
     public void deleteTarget()
     {
         hasTarget = false;
+		playerAnimator.SetBool ("hasTarget", false);
         target = null;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(null);

@@ -11,13 +11,11 @@ public class EnemyBehavior : MonoBehaviour {
 	private PlayerHealth playerHealthScript;
 	private LookPlayer lookPlayerScript;
 
-
     // Use this for initialization
     void Awake() {
         element = Random.Range(1, SpellManager.getnElements()); //Inicializa de forma aleatoria el elemento con el que está sintonizado el objetivo.
 		playerHealthScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
 		lookPlayerScript = gameObject.GetComponentInChildren<LookPlayer> ();
-
     }
 
 	void Start () {
@@ -25,8 +23,7 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () { // No puedes llamarlo cada frame! Lo que estas haciendo es, para cada "frame" llamar la funcion 
-					 //una burrada de veces! O_O
+	void Update () { 
 	}
 
 

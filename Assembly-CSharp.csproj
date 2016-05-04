@@ -49,6 +49,7 @@
      <Compile Include="Assets\Characters\Enemies\Scripts\EnemyBehavior.cs" />
      <Compile Include="Assets\Characters\Enemies\Scripts\EnemyHealth.cs" />
      <Compile Include="Assets\Characters\Enemies\Scripts\LookPlayer.cs" />
+     <Compile Include="Assets\Characters\Player\Scripts\AnimationExtensions.cs" />
      <Compile Include="Assets\Characters\Player\Scripts\CastSpell.cs" />
      <Compile Include="Assets\Characters\Player\Scripts\MakeTarget.cs" />
      <Compile Include="Assets\Characters\Player\Scripts\PlayerHealth.cs" />
