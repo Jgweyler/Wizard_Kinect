@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-    private const float Y_POS = 0.5f; //Posicion máxima de eje Y donde se colocarán los enemigos.
+    private const float Y_POS = 10f; //Posicion máxima de eje Y donde se colocarán los enemigos.
     private const float MIN_POS = 1.0f; //Posiciones mínimas de las coordenadas X y Z de los enemigos
     public int numEnemies;
 

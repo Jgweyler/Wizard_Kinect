@@ -31,6 +31,10 @@ public class Spell : MonoBehaviour
             if (elementType == counterElement)
                 other.gameObject.GetComponent<EnemyHealth>().dealDamage();
         }
+
+		if (MakeTarget.target == other.gameObject) {
+			MakeTarget.updateEnemySlider(other.gameObject.GetComponent<EnemyHealth>().getCurrentHealth());
+		}
         //Comprobar si el hechizo colisiona con algo P.E, un enemigo, y realizar las operaciones oportunas.
     }
 

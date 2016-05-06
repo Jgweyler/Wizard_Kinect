@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour {
 	private const int LEFT = 0;
 	private const int RIGHT = 1;
 
-
     private Rigidbody rigidBody;
     private string movementAxisName;
     private string movementTurnAxisName;
@@ -48,10 +47,13 @@ public class PlayerMovement : MonoBehaviour {
         movementInputValue = Input.GetAxis(movementAxisName);
         turnInputValue = Input.GetAxis(movementTurnAxisName);
 
-		if (movementInputValue > 0) {
+		if (isMovingForward()) {
 			playerAnim.SetBool ("isMoving", true);
-		} else {
+		} else if (isMovingBackwards()) {
+			playerAnim.SetBool ("goBack", true);
+		}else{
 			playerAnim.SetBool ("isMoving", false);
+			playerAnim.SetBool ("goBack", false);
 		}
 
 		if (turnInputValue != 0) {
@@ -61,6 +63,19 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
+	private bool isMovingForward(){
+		if (movementInputValue > 0)
+			return true;
+		else
+			return false;
+	}
+
+	private bool isMovingBackwards(){
+		if(movementInputValue < 0)
+			return true;
+		else
+			return false;
+	}
     private void FixedUpdate() {
 
         if (!hasTarget){

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,12 +7,16 @@ public class MakeTarget : MonoBehaviour {
 
     private bool hasTarget;        //Si el jugador ha fijado un objetivo.
     private bool isPointing;       //Indica si se está señalando o designando un objetivo
-    private GameObject target;     //Referencia al enemigo que ha marcado el jugador.
+    public static GameObject target;     //Referencia al enemigo que ha marcado el jugador.
+	public static CanvasGroup enemyCanvasGroup;
+	public static Slider enemyHealthSlider;
+
     private List<GameObject> enemies;  //Referencia de todos los enemigos en el juego.
 	private Animator playerAnimator;
 
     private GameManager gameManagerScript;
     private PlayerMovement playerMovementScript;
+	private Image enemyElement;
 
     void Awake() {
         hasTarget = false;
@@ -21,6 +26,12 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript = gameObject.GetComponent<PlayerMovement>();
 		playerAnimator = GetComponent<Animator> ();
         enemies = gameManagerScript.getEnemies();
+
+		//Obtenemos las referencias de el slider que representa la vida del enemigo y la imagen que indica el elemento al que esta
+		//Sintonizado
+		enemyCanvasGroup = GameObject.FindGameObjectWithTag("HUDCanvas").GetComponentsInChildren<Canvas>()[1].GetComponent<CanvasGroup>();
+		enemyHealthSlider = GameObject.FindGameObjectWithTag("HUDCanvas").GetComponentsInChildren<Slider>()[1];
+		enemyCanvasGroup.alpha = 0f;
 	}
 	
 	// Update is called once per frame
@@ -63,6 +74,8 @@ public class MakeTarget : MonoBehaviour {
         target = tg;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(tg);
+		enemyHealthSlider.value = tg.GetComponent<EnemyHealth> ().getCurrentHealth ();
+		enemyCanvasGroup.alpha = 1f; //Hacemos visible los datos del enemigo.
     }
 
     public void deleteTarget()
@@ -72,9 +85,14 @@ public class MakeTarget : MonoBehaviour {
         target = null;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(null);
+		enemyCanvasGroup.alpha = 0f; //Hacemos visible los datos del enemigo.
     }
 
 	public bool pointed_target(){ //Devuelve si tiene un enemigo fijado actualmente.
 		return hasTarget;
+	}
+
+	public static void updateEnemySlider(float newValue){
+		enemyHealthSlider.value = newValue;
 	}
 }
