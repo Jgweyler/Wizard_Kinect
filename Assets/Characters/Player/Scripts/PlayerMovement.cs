@@ -157,7 +157,9 @@ public class PlayerMovement : MonoBehaviour {
             return;
         }
 
-        Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
+		Vector3 newPosition = new Vector3 (playerTarget.transform.position.x - transform.position.x, transform.position.y, playerTarget.transform.position.z - transform.position.z);
+		//Quaternion targetRotation = Quaternion.LookRotation(playerTarget.transform.position - transform.position);
+		Quaternion targetRotation = Quaternion.LookRotation(newPosition);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
 
         float move = turnInputValue * speedInCombat;

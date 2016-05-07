@@ -31,6 +31,7 @@ public class MakeTarget : MonoBehaviour {
 		//Sintonizado
 		enemyCanvasGroup = GameObject.FindGameObjectWithTag("HUDCanvas").GetComponentsInChildren<Canvas>()[1].GetComponent<CanvasGroup>();
 		enemyHealthSlider = GameObject.FindGameObjectWithTag("HUDCanvas").GetComponentsInChildren<Slider>()[1];
+		enemyElement = enemyCanvasGroup.GetComponentsInChildren<Image> ()[2];
 		enemyCanvasGroup.alpha = 0f;
 	}
 	
@@ -75,7 +76,10 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(tg);
 		enemyHealthSlider.value = tg.GetComponent<EnemyHealth> ().getCurrentHealth ();
+		int spriteElement = tg.GetComponent<EnemyBehavior> ().getElement () - 1;
+		Debug.Log ("El elemento eees " + spriteElement);
 		enemyCanvasGroup.alpha = 1f; //Hacemos visible los datos del enemigo.
+		enemyElement.sprite = GetComponent<SpellManager>().sprites [spriteElement];
     }
 
     public void deleteTarget()
