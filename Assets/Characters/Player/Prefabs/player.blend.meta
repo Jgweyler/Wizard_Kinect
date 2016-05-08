@@ -146,6 +146,7 @@ ModelImporter:
     7400006: chargeSpell
     7400008: launchSpell
     7400010: combatPos
+    7400012: SummonElement
     9500000: //RootNode
     13700000: Wizard
   materials:
@@ -1000,6 +1001,168 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/footCtrl_L
+        weight: 0
+      - path: Armature/footCtrl_L/footRollCtrl_L
+        weight: 0
+      - path: Armature/footCtrl_L/heelRoll_L
+        weight: 0
+      - path: Armature/footCtrl_L/heelRoll_L/toeRoll_L
+        weight: 0
+      - path: Armature/footCtrl_L/heelRoll_L/toeRoll_L/footIK_L
+        weight: 0
+      - path: Armature/footCtrl_R
+        weight: 0
+      - path: Armature/footCtrl_R/footRollCtrl_R
+        weight: 0
+      - path: Armature/footCtrl_R/heelRoll_R
+        weight: 0
+      - path: Armature/footCtrl_R/heelRoll_R/toeRoll_R
+        weight: 0
+      - path: Armature/footCtrl_R/heelRoll_R/toeRoll_R/footIK_R
+        weight: 0
+      - path: Armature/hipsCtrl
+        weight: 1
+      - path: Armature/hipsCtrl/root
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/index1_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/index1_L/index2_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/index1_L/index2_L/index3_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/mid1_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/mid1_L/mid2_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/mid1_L/mid2_L/mid3_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/pinkie1_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/pinkie1_L/pinkie2_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/pinkie1_L/pinkie2_L/pinkie3_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/ring1_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/ring1_L/ring2_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/ring1_L/ring2_L/ring3_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/thumb1_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/thumb1_L/thumb2_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_L/upArm_L/lowArm_L/arm_L/thumb1_L/thumb2_L/thumb3_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/index1_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/index1_R/index2_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/index1_R/index2_R/index3_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/mid1_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/mid1_R/mid2_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/mid1_R/mid2_R/mid3_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/pinkie1_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/pinkie1_R/pinkie2_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/pinkie1_R/pinkie2_R/pinkie3_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/ring1_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/ring1_R/ring2_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/ring1_R/ring2_R/ring3_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/thumb1_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/thumb1_R/thumb2_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/clavicle_R/upArm_R/lowArm_R/arm_R/thumb1_R/thumb2_R/thumb3_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/neck
+        weight: 1
+      - path: Armature/hipsCtrl/root/spine1/spine2/neck/head
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_L/lowLeg_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_L/lowLeg_L/foot_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_L/lowLeg_L/foot_L/toe_L
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_R/lowLeg_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_R/lowLeg_R/foot_R
+        weight: 1
+      - path: Armature/hipsCtrl/root/upLeg_R/lowLeg_R/foot_R/toe_R
+        weight: 1
+      - path: Armature/kneeCtrl_L
+        weight: 0
+      - path: Armature/kneeCtrl_R
+        weight: 0
+      - path: Wizard
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 308.88
+    - serializedVersion: 16
+      name: SummonElement
+      takeName: ArmatureAction
+      firstFrame: 121
+      lastFrame: 145
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

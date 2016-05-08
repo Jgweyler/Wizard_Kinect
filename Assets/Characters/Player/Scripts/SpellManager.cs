@@ -12,8 +12,9 @@ public class SpellManager : MonoBehaviour {
     private static Rigidbody spell;                 //Contendrá el prefab del hechizo.
     private static Transform spellTransform;        //Posición donde se crearán los diferentes hechizos.
 	private Image [] elementsSelection; //Conjunto de imagenes del canvas que permiten visualizar el elemento seleccionado.
-
 	public Sprite [] sprites;
+
+	private Animator playerAnimator;
 
 	public static int FIRE = 1;
 	public static int WATER = 2;
@@ -34,6 +35,7 @@ public class SpellManager : MonoBehaviour {
         castSpellScript = GetComponent<CastSpell>();
         spell = castSpellScript.spell;
         spellTransform = castSpellScript.spellTransform;
+		playerAnimator = GetComponent<Animator> ();
     }
 	void Start () {
 
@@ -89,46 +91,43 @@ public class SpellManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = FIRE;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (FIRE);
         } else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = WATER;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (WATER);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = THUNDER;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (THUNDER);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = STONE;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (STONE);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = WIND;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (WIND);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
-            currentElement = ICE;
-			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			summonElement (ICE);
         }
     }
+
+	public void summonElement(int element){
+		//Si el personaje no se está moviendo, permitimos que cambie de elemento.
+		if (playerAnimator.GetBool ("isMoving") == false) {
+			playerAnimator.Play ("SummonElement");
+			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+			currentElement = element;
+			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			if (playerAnimator.GetBool ("hasTarget") == false)
+				playerAnimator.Play ("idle");
+			else
+				playerAnimator.Play ("combatPos");
+		}
+	}
 
 	public static void switchElement_Kinect(){
 		switch(selectedElement){
