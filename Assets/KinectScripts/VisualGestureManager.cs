@@ -75,8 +75,10 @@ public class VisualGestureManager : MonoBehaviour
 	// primary user ID, as reported by KinectManager
 	private long primaryUserID = 0;
 	private PlayerMovement playerMovementScript;
+	private SpellManager spellManagerScript;
 	private MakeTarget playerTargetScript;
 	private CastSpell castSpellScript;
+	private Animator playerAnimator;
 
 	private const int girar_left = 0;
 	private const int girar_right = 1;
@@ -85,9 +87,10 @@ public class VisualGestureManager : MonoBehaviour
 	private const int caminar = 5;
 	private const int fijar_objetivo = 6;
 	private const int cargar_hechizo = 7;
+	private const int lanzar = 8;
 
 	//Poner en esta variable el numero de gestos totales que hay.
-	private int n_gestures = 8;
+	private int n_gestures = 9;
 	private bool[] completed_gestures;
 
 	// gesture data holders for each tracked gesture
@@ -312,6 +315,12 @@ public class VisualGestureManager : MonoBehaviour
 			playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 			playerTargetScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MakeTarget>();
 			castSpellScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CastSpell>();
+			spellManagerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<SpellManager>();
+			playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+			completed_gestures = new bool[n_gestures];
+			for (int i = 0; i < n_gestures; i++) {
+				completed_gestures [i] = false;
+			}
 			isVisualGestureInitialized = true;
 		} 
 		catch(DllNotFoundException ex)
@@ -368,61 +377,30 @@ public class VisualGestureManager : MonoBehaviour
 							String gesto = gestureName;
 							switch(gesto){
 							case "girar_Left":
-								if (!playerTargetScript.pointed_target ())
-									playerMovementScript.turnRight_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
-								else
-									playerMovementScript.combatMoveKinect (0);
-
-								if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [girar_left] = true;
 								break;
 							case "girar_Right":
-								if (!playerTargetScript.pointed_target ())
-									playerMovementScript.turnLeft_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
-								else
-									playerMovementScript.combatMoveKinect (1);
-
-								if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [girar_right] = true;
 								break;
 							case "retroceder":
-								playerMovementScript.goBack_Kinect ();
-								if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [retroceder] = true;
 								break;
 							case "fijar_objetivo":
-								playerTargetScript.pointTarget_Kinect ();
-								if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [fijar_objetivo] = true;
 								break;
 							case "caminar":
-								playerMovementScript.moveForward_Kinect ();
-
-								if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [caminar] = true;
 								break;
 							case "invocar_elemento":
-								SpellManager.switchElement_Kinect ();
-								if (!castSpellScript.getCasted_Kinect ()) {
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [invocar_elemento] = true;
 								break;
 							case "cargar_hechizo":
-								if (!castSpellScript.getCasted_Kinect ()) {
-									castSpellScript.setCasted_Kinect (true);
-								}
+								completed_gestures [cargar_hechizo] = true;
 								break;
 							case "lanzar":
-								if( castSpellScript.getCasted_Kinect ()){
-									SpellManager.launchSpell(30f); //Cambiar este cableado. El parametro es 
-									//la fuerza de lanzamiento.
-									castSpellScript.setCasted_Kinect (false);
-								}
+								completed_gestures [lanzar] = true;
+								break;
+							default:
 								break;
 							}
 							/*
@@ -448,6 +426,107 @@ public class VisualGestureManager : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	void FixedUpdate(){
+		for (int i = 0; i < n_gestures; i++) {
+			switch (i) {
+			case girar_left:
+				if (completed_gestures [girar_left]) { // Si está girando...
+					if (!playerTargetScript.pointed_target ())
+						playerMovementScript.turnRight_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
+					else
+						playerMovementScript.combatMoveKinect (0);
+
+					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
+						castSpellScript.setCasted_Kinect (false);
+					}
+				}
+				break;
+			case girar_right:
+				if (completed_gestures [girar_right]) { // Si está girando
+					if (!playerTargetScript.pointed_target ())
+						playerMovementScript.turnLeft_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
+					else
+						playerMovementScript.combatMoveKinect (1);
+
+					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
+						castSpellScript.setCasted_Kinect (false);
+					}
+				}
+				break;
+			case invocar_elemento:
+				if (completed_gestures [invocar_elemento]) {
+					spellManagerScript.switchElement_Kinect ();
+					if (!castSpellScript.getCasted_Kinect ()) {
+						castSpellScript.setCasted_Kinect (false);
+					}
+				}
+				break;
+			case retroceder:
+				if (completed_gestures [retroceder]) { //Si detectó que se está retrocediendo
+					playerMovementScript.goBack_Kinect ();
+					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
+						castSpellScript.setCasted_Kinect (false);
+					}
+					//Puede pasar que se haya detectado el gesto de caminar, y a la vez se hace el movimiento de retroceder.
+					//En tal caso, como tiene más importancia el de retroceder sobre el de caminar, anulamos el de caminar:
+					completed_gestures[caminar] = false;
+					completed_gestures [cargar_hechizo] = false;
+				} else { // Si no detectó que está retrocediendo, nos aseguramos de parar la animacion de retroceder.
+					if(playerAnimator.GetBool("goBack")){ //Comprobamos que se detenga correctamente la animación de correr.
+						playerAnimator.SetBool("goBack", false);
+					}
+				}
+				break;
+			case caminar:
+				if (completed_gestures [caminar]) { // Si se detectó que el usuario está caminando.
+					playerMovementScript.moveForward_Kinect ();
+
+					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
+						castSpellScript.setCasted_Kinect (false);
+					}
+				} else { //Si se detectó que no está caminando
+					if(playerAnimator.GetBool("isMoving")){ //Comprobamos que se detenga correctamente la animación de correr.
+						playerAnimator.SetBool("isMoving", false);
+					}
+				}
+				break;
+			case fijar_objetivo:
+				if (completed_gestures [fijar_objetivo]) {
+					playerTargetScript.pointTarget_Kinect ();
+					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
+						castSpellScript.setCasted_Kinect (false);
+					}
+				}
+				break;
+			case cargar_hechizo:
+				if (completed_gestures [cargar_hechizo]) {
+					if (!castSpellScript.getCasted_Kinect ()) {
+						playerAnimator.Play ("chargeSpell");
+						if (!castSpellScript.getCasted_Kinect ()) {
+							castSpellScript.setCasted_Kinect (true);
+						}
+					}
+				}
+				break;
+			case lanzar:
+				if (completed_gestures [lanzar]) {
+					if (castSpellScript.getCasted_Kinect ()) {
+						SpellManager.launchSpell (30f); //Cambiar este cableado. El parametro es 
+						//la fuerza de lanzamiento.
+						castSpellScript.setCasted_Kinect (false);
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		for (int j = 0; j < n_gestures; j++) {
+			completed_gestures [j] = false;
 		}
 	}
 	

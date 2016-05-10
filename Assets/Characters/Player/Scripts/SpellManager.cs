@@ -129,25 +129,37 @@ public class SpellManager : MonoBehaviour {
 		}
 	}
 
-	public static void switchElement_Kinect(){
+	public void summonElementKinect(int element){
+		//Si el personaje no se está moviendo, permitimos que cambie de elemento.
+		if ((playerAnimator.GetBool ("isMoving") == false) && (currentElement != selectedElement)) {
+			playerAnimator.Play ("SummonElement");
+			currentElement = element;
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			if (playerAnimator.GetBool ("hasTarget") == false)
+				playerAnimator.Play ("idle");
+			else
+				playerAnimator.Play ("combatPos");
+		}
+	}
+	public void switchElement_Kinect(){
 		switch(selectedElement){
 		case fire:
-			currentElement = fire;
+			summonElementKinect (fire);
 			break;
 		case water:
-			currentElement = water;
+			summonElementKinect (water);
 			break;
 		case thunder:
-			currentElement = thunder;
+			summonElementKinect (thunder);
 			break;
 		case wind:
-			currentElement = wind;
+			summonElementKinect (wind);
 			break;
 		case ice:
-			currentElement = ice;
+			summonElementKinect (ice);
 			break;
 		case stone:
-			currentElement = stone;
+			summonElementKinect (stone);
 			break;
 		default:
 			break;

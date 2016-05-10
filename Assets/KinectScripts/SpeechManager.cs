@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.IO;
@@ -31,6 +32,7 @@ public class SpeechManager : MonoBehaviour
 	private bool isPhraseRecognized;
 	private string phraseTagRecognized;
 	private float phraseConfidence;
+	private Image [] elementsSelection;
 	
 	// primary sensor data structure
 	private KinectInterop.SensorData sensorData = null;
@@ -240,6 +242,14 @@ public class SpeechManager : MonoBehaviour
 			if(debugText != null)
 				debugText.GetComponent<GUIText>().text = ex.Message;
 		}
+
+		Image [] imagenes = GameObject.FindGameObjectWithTag ("HealthUI").GetComponentsInChildren<Image>();
+
+		elementsSelection = new Image [SpellManager.getnElements()];
+
+		for (int i = 1; i <= SpellManager.getnElements(); i++){
+			elementsSelection[i -1] = imagenes[2 +i];
+		}
 	}
 
 	void OnDestroy()
@@ -301,25 +311,31 @@ public class SpeechManager : MonoBehaviour
 		}
 	}
 
+	private void selectElement(int element){
+		elementsSelection [SpellManager.selectedElement - 1].CrossFadeAlpha (0f, 0.2f, true);
+		SpellManager.selectedElement = element;
+		elementsSelection [SpellManager.selectedElement - 1].CrossFadeAlpha (1f, 0.2f, true);
+	}
+
 	private void changeSpell_Kinect(String recognized_word, double confidence){
 		switch(recognized_word){
 		case "FUEGO":
-			SpellManager.selectedElement =  SpellManager.FIRE;
+			selectElement (SpellManager.FIRE);
 			break;
 		case "HIELO":
-			SpellManager.selectedElement =  SpellManager.ICE;
+			selectElement (SpellManager.ICE);
 			break;
 		case "AGUA":
-			SpellManager.selectedElement =  SpellManager.WATER;
+			selectElement (SpellManager.WATER);
 			break;
 		case "VIENTO":
-			SpellManager.selectedElement =  SpellManager.WIND;
+			selectElement (SpellManager.WIND);
 			break;
 		case "ROCA":
-			SpellManager.selectedElement =  SpellManager.STONE;
+			selectElement (SpellManager.STONE);
 			break;
 		case "RAYO":
-			SpellManager.selectedElement =  SpellManager.THUNDER;
+			selectElement (SpellManager.THUNDER);
 			break;
 		case "PAUSA":
 			break;

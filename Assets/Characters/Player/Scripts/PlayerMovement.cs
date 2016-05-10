@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
     public float speed = 12f;       //Velocidad (Movimiento hacia alante y atrás).
     public float turnSpeed = 180f;  //Velocidad de giro
 	public float moveSpeed_Kinect = 0.5f;
-	private float turnSpeedKinect = 45f; // Velocidad de giro usando Kinect.
+	private float turnSpeedKinect = 180f; // Velocidad de giro usando Kinect.
 	private const int LEFT = 0;
 	private const int RIGHT = 1;
 
@@ -24,12 +24,17 @@ public class PlayerMovement : MonoBehaviour {
     private float speedInCombat; //Velocidad de movimiento en combate.
     private MakeTarget makeTargetScript;
 
+	private KinectManager kinectManagerScript;
+	private bool isDetectingUserWithKinect; // Determina si el sensor de kinect está disponible.
+
 
     // Use this for initialization
     private void Start () {
         rigidBody = GetComponent< Rigidbody >();
 		playerAnim = GetComponent<Animator> ();
         makeTargetScript = GetComponent<MakeTarget>();
+		kinectManagerScript = GameObject.FindGameObjectWithTag ("GameController").GetComponent<KinectManager> ();
+		isDetectingUserWithKinect = kinectManagerScript.IsUserDetected();
         //Inicializamos los gestores del input y los referenciamos con un nombre.
         movementAxisName = "Vertical";
         movementTurnAxisName = "Horizontal";
@@ -47,19 +52,23 @@ public class PlayerMovement : MonoBehaviour {
         movementInputValue = Input.GetAxis(movementAxisName);
         turnInputValue = Input.GetAxis(movementTurnAxisName);
 
-		if (isMovingForward()) {
-			playerAnim.SetBool ("isMoving", true);
-		} else if (isMovingBackwards()) {
-			playerAnim.SetBool ("goBack", true);
-		}else{
-			playerAnim.SetBool ("isMoving", false);
-			playerAnim.SetBool ("goBack", false);
-		}
+		isDetectingUserWithKinect = kinectManagerScript.IsUserDetected ();
 
-		if (turnInputValue != 0) {
-			playerAnim.SetBool ("isTurning", true);
-		} else {
-			playerAnim.SetBool ("isTurning", false);
+		if (!isDetectingUserWithKinect) { //Si kinect no detecta a un usuario, habilitamos las animaciones por teclado
+			if (isMovingForward ()) {
+				playerAnim.SetBool ("isMoving", true);
+			} else if (isMovingBackwards ()) {
+				playerAnim.SetBool ("goBack", true);
+			} else {
+				playerAnim.SetBool ("isMoving", false);
+				playerAnim.SetBool ("goBack", false);
+			}
+
+			if (turnInputValue != 0) {
+				playerAnim.SetBool ("isTurning", true);
+			} else {
+				playerAnim.SetBool ("isTurning", false);
+			}
 		}
 	}
 
@@ -106,6 +115,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	//Funciones de Kinect
 	public void goBack_Kinect(){
+
+		if(!playerAnim.GetBool("goBack")){ //Comprobamos que se detenga correctamente la animación de correr.
+			playerAnim.SetBool("goBack", true);
+		}
 		if(playerTarget != null){ //Si tiene objetivo asignado, hay que quitarlo.
 			makeTargetScript.deleteTarget();
 		}
@@ -114,6 +127,9 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void moveForward_Kinect(){
+		if(!playerAnim.GetBool("isMoving")){ //Si no se esta ejecutando la animacion de correr
+			playerAnim.SetBool("isMoving", true); // Hacemos que corra.
+		}
 		Vector3 movement = transform.forward * moveSpeed_Kinect * speed * Time.deltaTime;
 		rigidBody.MovePosition(rigidBody.position + movement);
 	}
