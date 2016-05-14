@@ -429,10 +429,11 @@ public class VisualGestureManager : MonoBehaviour
 		}
 	}
 
-	void FixedUpdate(){
+	void LateUpdate(){
 		for (int i = 0; i < n_gestures; i++) {
 			switch (i) {
 			case girar_left:
+				
 				if (completed_gestures [girar_left]) { // Si está girando...
 					if (!playerTargetScript.pointed_target ())
 						playerMovementScript.turnRight_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
@@ -441,10 +442,16 @@ public class VisualGestureManager : MonoBehaviour
 
 					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
 						castSpellScript.setCasted_Kinect (false);
+						backToNormalPose ();
 					}
+				} else { //Si no está girando, paramos la animacion en el caso de que se estuviera ejecutando.
+					if (playerAnimator.GetBool ("isTurning"))
+						playerAnimator.SetBool ("isTurning", false);
 				}
+
 				break;
 			case girar_right:
+				
 				if (completed_gestures [girar_right]) { // Si está girando
 					if (!playerTargetScript.pointed_target ())
 						playerMovementScript.turnLeft_Kinect (); //Detecta el brazo IZQUIERDO(desde la perspectiva de Kinect) levantado
@@ -453,22 +460,31 @@ public class VisualGestureManager : MonoBehaviour
 
 					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
 						castSpellScript.setCasted_Kinect (false);
+						backToNormalPose ();
 					}
+				}else { //Si no está girando, paramos la animacion en el caso de que se estuviera ejecutando.
+					if (playerAnimator.GetBool ("isTurning"))
+						playerAnimator.SetBool ("isTurning", false);
 				}
+
 				break;
 			case invocar_elemento:
+				
 				if (completed_gestures [invocar_elemento]) {
 					spellManagerScript.switchElement_Kinect ();
 					if (!castSpellScript.getCasted_Kinect ()) {
 						castSpellScript.setCasted_Kinect (false);
 					}
 				}
+
 				break;
 			case retroceder:
+				
 				if (completed_gestures [retroceder]) { //Si detectó que se está retrocediendo
 					playerMovementScript.goBack_Kinect ();
 					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
 						castSpellScript.setCasted_Kinect (false);
+						backToNormalPose ();
 					}
 					//Puede pasar que se haya detectado el gesto de caminar, y a la vez se hace el movimiento de retroceder.
 					//En tal caso, como tiene más importancia el de retroceder sobre el de caminar, anulamos el de caminar:
@@ -479,6 +495,7 @@ public class VisualGestureManager : MonoBehaviour
 						playerAnimator.SetBool("goBack", false);
 					}
 				}
+
 				break;
 			case caminar:
 				if (completed_gestures [caminar]) { // Si se detectó que el usuario está caminando.
@@ -486,39 +503,50 @@ public class VisualGestureManager : MonoBehaviour
 
 					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
 						castSpellScript.setCasted_Kinect (false);
+						backToNormalPose ();
 					}
 				} else { //Si se detectó que no está caminando
 					if(playerAnimator.GetBool("isMoving")){ //Comprobamos que se detenga correctamente la animación de correr.
 						playerAnimator.SetBool("isMoving", false);
+						Debug.Log("Correr pasa a false!");
 					}
 				}
 				break;
 			case fijar_objetivo:
+				
 				if (completed_gestures [fijar_objetivo]) {
 					playerTargetScript.pointTarget_Kinect ();
 					if (castSpellScript.getCasted_Kinect ()) { //Si se mueve, interrumpimos el casteo.
 						castSpellScript.setCasted_Kinect (false);
+						backToNormalPose ();
 					}
 				}
+
 				break;
 			case cargar_hechizo:
+				
 				if (completed_gestures [cargar_hechizo]) {
-					if (!castSpellScript.getCasted_Kinect ()) {
+					if (!castSpellScript.getCasted_Kinect () && !playerAnimator.GetBool("isMoving")) {
+						//playerAnimator.SetBool ("isCasting", true);
 						playerAnimator.Play ("chargeSpell");
-						if (!castSpellScript.getCasted_Kinect ()) {
-							castSpellScript.setCasted_Kinect (true);
-						}
+						castSpellScript.setCasted_Kinect (true);
 					}
 				}
+
 				break;
 			case lanzar:
+				
 				if (completed_gestures [lanzar]) {
 					if (castSpellScript.getCasted_Kinect ()) {
-						SpellManager.launchSpell (30f); //Cambiar este cableado. El parametro es 
+						//playerAnimator.Play ("launchSpell");
+						StartCoroutine(waitAnimation("launchSpell"));
+						SpellManager.launchSpell (100f); //Cambiar este cableado. El parametro es 
 						//la fuerza de lanzamiento.
 						castSpellScript.setCasted_Kinect (false);
+						//backToNormalPose ();
 					}
 				}
+
 				break;
 			default:
 				break;
@@ -529,7 +557,29 @@ public class VisualGestureManager : MonoBehaviour
 			completed_gestures [j] = false;
 		}
 	}
-	
+
+	private void backToNormalPose(){ //Cancela el casteo debido a que el jugador no completó el lanzamiento de hechizo
+		//playerAnimator.SetBool("isCasting", false);
+		if (playerAnimator.GetBool ("hasTarget")) {
+			playerAnimator.Play ("combatPos");
+		} else {
+			playerAnimator.Play ("idle");
+		}
+	}
+
+	private IEnumerator waitAnimation( String paramAnimationState){
+		/*playerAnimator.SetBool(paramAnimationState, true);
+		yield return null;
+		playerAnimator.SetBool(paramAnimationState, false);
+		*/
+		playerAnimator.Play(paramAnimationState);
+		yield return new WaitForSeconds(10);
+		/*
+		while (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f)
+		{
+			yield return null;
+		}*/
+	}
 	private bool IsVisualGesturesAvailable(ref bool bNeedRestart)
 	{
 		bool bOneCopied = false, bAllCopied = true;

@@ -97,6 +97,7 @@
      <Compile Include="Assets\KinectScripts\VisualGestureManager.cs" />
      <Compile Include="Assets\Spells\Scripts\EnemySpell.cs" />
      <Compile Include="Assets\Spells\Scripts\Spell.cs" />
+     <Compile Include="Assets\UI\Scripts\KinectRecorder.cs" />
      <None Include="Assets\Resources\BlurShader.shader" />
      <None Include="Assets\Resources\DepthShader.shader" />
      <None Include="Assets\Resources\SpeechGrammar.grxml.txt" />

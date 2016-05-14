@@ -77,7 +77,6 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript.setTarget(tg);
 		enemyHealthSlider.value = tg.GetComponent<EnemyHealth> ().getCurrentHealth ();
 		int spriteElement = tg.GetComponent<EnemyBehavior> ().getElement () - 1;
-		Debug.Log ("El elemento eees " + spriteElement);
 		enemyCanvasGroup.alpha = 1f; //Hacemos visible los datos del enemigo.
 		enemyElement.sprite = GetComponent<SpellManager>().sprites [spriteElement];
     }

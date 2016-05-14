@@ -70,9 +70,8 @@ public class PortraitBackground : MonoBehaviour
 			float fScreenWidth = (float)Screen.height * fFactorSW;
 
 			GUITexture guiTexture = GetComponent<GUITexture>();
-			if(guiTexture)
-			{
-				guiTexture.pixelInset = new Rect(dOffsetX, 0, fDeltaWidth, 0);
+			if (guiTexture) {
+				guiTexture.pixelInset = new Rect (dOffsetX, 0, fDeltaWidth, 0);
 			}
 
 			backgroundRect = new Rect(dOffsetX, 0, fScreenWidth, Screen.height);
