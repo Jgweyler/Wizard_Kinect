@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour {
     private GameObject HUDCanvas;                                       //Referencia al canvas que tiene almacenados los elementos gráficos tales como la vida del personaje.
     private Slider HealthSlider;                                        //Slider que representa la vida del persoanje
     private Image damageImage;                                          //Imagen que será mostrada milésimas de segundo para indicar que el personaje fue dañado.
+	private Animator playerAnimator;									//Controlador de las animaciones del jugador.
 
     private bool isDead;                                                // Si el personaje está muerto.
     private bool damaged;                                               // Cuando el personaje recibe daño.
@@ -33,6 +34,7 @@ public class PlayerHealth : MonoBehaviour {
 
         playerMovement = GetComponent<PlayerMovement>();
         playerCastSpell = GetComponentInChildren<CastSpell>();
+		playerAnimator = GetComponent<Animator> ();
     }
 	
 	// Update is called once per frame
@@ -76,6 +78,7 @@ public class PlayerHealth : MonoBehaviour {
     void Death(){
         //Indicamos que el personaje está muerto y por lo tanto, no podrá atacar ni moverse.
         isDead = true;
+		playerAnimator.Play ("Die");
 
         //Desactivamos los scripts de ataque y movimiento.
         playerMovement.enabled = false;

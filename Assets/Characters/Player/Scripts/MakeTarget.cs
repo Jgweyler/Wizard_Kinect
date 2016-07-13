@@ -85,6 +85,7 @@ public class MakeTarget : MonoBehaviour {
     {
         hasTarget = false;
 		playerAnimator.SetBool ("hasTarget", false);
+		playerAnimator.Play ("idle");
         target = null;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(null);

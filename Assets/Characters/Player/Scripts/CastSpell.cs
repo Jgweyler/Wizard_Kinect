@@ -16,6 +16,10 @@ public class CastSpell : MonoBehaviour {
     public Transform spellTransform; //Posición donde se crearán los diferentes hechizos.
     //El mago dispone de diferentes tipos de hechizo
 
+	//Objetos que permiten combinar las animaciones de ataque y movimiento. (El usuario puede atacar y 
+	//moverse al mismo tiempo).
+
+
     void Awake() {
 		
     }
@@ -26,6 +30,7 @@ public class CastSpell : MonoBehaviour {
         chargeSpeed = (maxCastForce - minCastForce) / maxChargeTime;
         spellButton = "Fire1";
 		casted_kinect = false;
+
     }
     private void OnEnable()
     {
@@ -35,13 +40,14 @@ public class CastSpell : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+		/*
 		if (Input.GetButtonDown (spellButton)) {
 			playerAnimator.SetBool ("isCasting", true);
 		} else {
 			playerAnimator.SetBool ("isCasting", false);
 		}
-        
+		*/
+		
         // Si se ha alcanzado la fuerza máxima de casteo y el hechizo no se ha lanzado...
         if (currentCastForce >= maxCastForce && !casted)
         {
@@ -72,8 +78,7 @@ public class CastSpell : MonoBehaviour {
             // ... lanzamos el hechizo.
 			//playerAnimator.SetBool ("isLaunching", true);
 			//playerAnimator.PlayInFixedTime("launchSpell");
-			playerAnimator.Play ("launchSpell");
-			Debug.Log (playerAnimator.GetCurrentAnimatorStateInfo(0));
+			playerAnimator.Play ("launchSpell");;
             Fire();
         }
 
