@@ -4,26 +4,27 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-    private const float Y_POS = 10f; //Posicion máxima de eje Y donde se colocarán los enemigos.
-    private const float MIN_POS = 1.0f; //Posiciones mínimas de las coordenadas X y Z de los enemigos
+    private const float Y_POS = 10f;    //Max Y axis for spawning enemies .
+    private const float MIN_POS = 1.0f; //Min X and Z for spawning enemies.
     public int numEnemies;
 
-    public GameObject player;       //Jugador
-    public GameObject playerSpell;  //Hechizo del jugador
-    public GameObject enemy;        //Prefab de los enemigos para poder instanciarlos.
-    public GameObject terrain;      //Terreno sobre el que se desarrolla el juego.
-    public GameObject main_camera;  //Camara del juego.
-    public GameObject hudCanvas;    //Elementos gráficos de la pantalla (canvas)
+    public GameObject player;       //Player Object
+    public GameObject playerSpell;  //Spell Object
+    public GameObject enemy;        //Prefab of an enemy.
+    public GameObject terrain;      //Game terrain.
+    public GameObject main_camera;  //Main camera.
+    public GameObject hudCanvas;    //HUD
 
-    private  List<GameObject>enemies;   //Almacena todas las referencias de los enemigos en el juego.
+    private  List<GameObject>enemies;   //All enemies in the game
 
     void Awake(){
-        Instantiate(terrain, terrain.transform.position, terrain.transform.rotation); //Primero es necesario generar un terreno.
-        //Instantiate(player, player.transform.position, player.transform.rotation);    //Creamos al jugador.
-        Instantiate(hudCanvas, hudCanvas.transform.position, hudCanvas.transform.rotation);
-        Instantiate(main_camera, main_camera.transform.position, main_camera.transform.rotation); //Creamos la cámara del juego. 
+        Instantiate(terrain, terrain.transform.position, terrain.transform.rotation); //Create the rettain.
+        //Instantiate(player, player.transform.position, player.transform.rotation);   
+        //Instantiate(hudCanvas, hudCanvas.transform.position, hudCanvas.transform.rotation);
+        //hudCanvas = GameObject.Find("HUDCanvas");
+        Instantiate(main_camera, main_camera.transform.position, main_camera.transform.rotation); //Create themain camera. 
 
-        instanceEnemies();        //Generamos a los enemigos.
+        instanceEnemies();        //Create enemies.
 
 
 

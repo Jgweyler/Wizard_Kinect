@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 public class MakeTarget : MonoBehaviour {
 
-    private bool hasTarget;        //Si el jugador ha fijado un objetivo.
-    private bool isPointing;       //Indica si se está señalando o designando un objetivo
-    public static GameObject target;     //Referencia al enemigo que ha marcado el jugador.
-	public static CanvasGroup enemyCanvasGroup;
-	public static Slider enemyHealthSlider;
+    private bool hasTarget;             //If the player has a target to attack.
+    private bool isPointing;             //Indicates if the player is pointing an enemy (KINECT)
+    public static GameObject target;     //Reference to the enemy targeted by the player.
+	public static CanvasGroup enemyCanvasGroup; // Enemy HUD
+	public static Slider enemyHealthSlider;     //Enemy health bar
 
-    private List<GameObject> enemies;  //Referencia de todos los enemigos en el juego.
+    private List<GameObject> enemies;  //All enemies in the game.
 	private Animator playerAnimator;
 
     private GameManager gameManagerScript;
@@ -37,38 +37,35 @@ public class MakeTarget : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButton(1) && !hasTarget){ //Si pulsa el botón y además no tiene objetivo asignado, lo intentamos asignar
+        if (Input.GetMouseButton(1) && !hasTarget){ //Press right click and the player will try to assign a target.
             pointTarget();
         }
 	}
 
-    private void pointTarget(){ //Fija el objetivo
-        //Puedes usar la funcion de área de daño de los tanques, pero con los enemigos. Solo podrías seleccionar aquellos que sean enemigos.
-        //Si se vuelve a pulsar el boton (o a realizar el evento de marcado), se debería cambiar de objetivo siempre y cuando lo haya.
+    private void pointTarget(){ //Points target (With right mouse button)
+
         SphereCollider player_range = gameObject.GetComponent<SphereCollider>();
         for (int i = 0; i < enemies.Count; i++) {
-            if (enemies[i] !=null && player_range.bounds.Contains(enemies[i].transform.position)){ //Si el enemigo está dentor del rango del jugador, se marca como objetivo.
+            if (enemies[i] !=null && player_range.bounds.Contains(enemies[i].transform.position)){ //If the enemy is in range -> Assign that enemy as target.
                 addTarget(enemies[i]);
                 return;
             }
         }
     }
 
-	public void pointTarget_Kinect(){
-		if (!hasTarget) { //Nos aseguramos de que no tenga un objetivo fijadopara no hacer Iteraciones de forma desmesurada.
+	public void pointTarget_Kinect(){ //ONLY WITH KINECT
+		if (!hasTarget) { //Make sure that the player has no target alredy.
 			SphereCollider player_range = gameObject.GetComponent<SphereCollider> ();
 			for (int i = 0; i < enemies.Count; i++) {
-				if (enemies [i] != null && player_range.bounds.Contains (enemies [i].transform.position)) { //Si el enemigo está dentor del rango del jugador, se marca como objetivo.
+				if (enemies [i] != null && player_range.bounds.Contains (enemies [i].transform.position)) { //If the enemy is in range -> Assign that enemy as target.
 					addTarget (enemies [i]);
 					return;
 				}
 			}
 		}
 	}
-    private void searchForEnemies(){ //Busca los enemigos que tenga en sus proximidades para marcar a uno.
-    }
 
-    public void addTarget(GameObject tg)
+    public void addTarget(GameObject tg) //Called when the player makes an enemy a target
     {
         hasTarget = true;
 		playerAnimator.SetBool ("hasTarget", true);
@@ -77,7 +74,7 @@ public class MakeTarget : MonoBehaviour {
         playerMovementScript.setTarget(tg);
 		enemyHealthSlider.value = tg.GetComponent<EnemyHealth> ().getCurrentHealth ();
 		int spriteElement = tg.GetComponent<EnemyBehavior> ().getElement () - 1;
-		enemyCanvasGroup.alpha = 1f; //Hacemos visible los datos del enemigo.
+		enemyCanvasGroup.alpha = 1f; //Make visible enemy info (HP, Spell...)
 		enemyElement.sprite = GetComponent<SpellManager>().sprites [spriteElement];
     }
 
@@ -89,10 +86,10 @@ public class MakeTarget : MonoBehaviour {
         target = null;
         playerMovementScript.setHasTarget(hasTarget);
         playerMovementScript.setTarget(null);
-		enemyCanvasGroup.alpha = 0f; //Hacemos visible los datos del enemigo.
+		enemyCanvasGroup.alpha = 0f;  //Make invisible enemy info (HP, Spell...)
     }
 
-	public bool pointed_target(){ //Devuelve si tiene un enemigo fijado actualmente.
+	public bool pointed_target(){ //Return the current target.
 		return hasTarget;
 	}
 

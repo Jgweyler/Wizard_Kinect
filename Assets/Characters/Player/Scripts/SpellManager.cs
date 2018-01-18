@@ -4,14 +4,14 @@ using System.Collections;
 
 public class SpellManager : MonoBehaviour {
 
-    public static int currentElement = 1; //Por defecto empezamos con fuego.
-	public static int selectedElement = 1; //Especifica que elemento fue seleccionado por voz en Kinect
-    private static int nElements = 6; //Numero de elementos con los que puede sintonizar el jugador.
-    private CastSpell castSpellScript;
-	private Image ElementImage; // Imagen del canvas que indica a que elemento actual está sintonizado el jugador.
-    private static Rigidbody spell;                 //Contendrá el prefab del hechizo.
-    private static Transform spellTransform;        //Posición donde se crearán los diferentes hechizos.
-	private Image [] elementsSelection; //Conjunto de imagenes del canvas que permiten visualizar el elemento seleccionado.
+    public static int currentElement = 1;  //Set FIRE spell as default.
+	public static int selectedElement = 1; //Set the selected Spell in the HUD
+    private static int nElements = 6;      //Number of elements.
+    private CastSpell castSpellScript;     //Reference to the cast spell script
+	public Image ElementImage;             // Reference to the choosed element in the HUD (Left Image from the HP bar).
+    private static Rigidbody spell;                 //Rigidbody reference of the spell.
+    private static Transform spellTransform;        //Position where the spell is going to spawn.
+	public Image [] elementsSelection;              //Images that represent the element selection of the player
 	public Sprite [] sprites;
 
 	private Animator playerAnimator;
@@ -39,18 +39,16 @@ public class SpellManager : MonoBehaviour {
     }
 	void Start () {
 
-		//Saca todas las imagenes y extrae la que te interesa.!!!!!
-		Image [] imagenes = GameObject.FindGameObjectWithTag ("HealthUI").GetComponentsInChildren<Image>();
+        //Make invisibles all images that are not selected (Remember that is FIRE (0) by default
 
-		ElementImage = imagenes [2];
-		elementsSelection = new Image [nElements];
+        for(int i = 0; i < nElements; i++)
+        {
+            if(i != 0)
+            {
+                elementsSelection[i].CrossFadeAlpha(0f, 0.2f, true);
+            }
+        }
 
-		for (int i = 1; i <= nElements; i++){
-			elementsSelection[i -1] = imagenes[2 +i];
-			if (i != 1) {
-				elementsSelection [i - 1].CrossFadeAlpha (0f, 0.2f, true);
-			}
-		}
 	}
 	
 	// Update is called once per frame
@@ -68,7 +66,7 @@ public class SpellManager : MonoBehaviour {
 
     public static void launchSpell(float currentCastForce)
     {
-        //Atender a que elemento está sintonizado el personaje
+        //Check selected element by the player
         Renderer rend = spell.GetComponent<Renderer>();
         Spell spellScript = spell.GetComponent<Spell>();
         switch (currentElement)
@@ -83,10 +81,11 @@ public class SpellManager : MonoBehaviour {
         }
         Rigidbody spellInstance = Instantiate(spell, spellTransform.position, spellTransform.rotation) as Rigidbody;
 
-        // Seteamos su velocidad hacia la misma trayectoria que hacia donde está mirando el personaje.
+        // Set velocity vector of the spell..
         spellInstance.velocity = currentCastForce * spellTransform.forward;
     }
 
+    //Handles the element changing (Keys: 1,2,3,4,5,6)
     private void switchElementListener() //
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -115,13 +114,13 @@ public class SpellManager : MonoBehaviour {
     }
 
 	public void summonElement(int element){
-		//Si el personaje no se está moviendo, permitimos que cambie de elemento.
-		if (playerAnimator.GetBool ("isMoving") == false) {
+        ////Change element only when the player is not moving
+        if (playerAnimator.GetBool ("isMoving") == false) {
 			playerAnimator.Play ("SummonElement");
 			elementsSelection [currentElement - 1].CrossFadeAlpha (0f, 0.2f, true);
 			currentElement = element;
 			elementsSelection [currentElement - 1].CrossFadeAlpha (1f, 0.2f, true);
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
+			ElementImage.sprite = sprites [currentElement - 1]; // -1 cos index starts from 0.
 			if (playerAnimator.GetBool ("hasTarget") == false)
 				playerAnimator.Play ("idle");
 			else
@@ -129,13 +128,14 @@ public class SpellManager : MonoBehaviour {
 		}
 	}
 
+    //KINECT!!!!!
 	public void summonElementKinect(int element){
-		//Si el personaje no se está moviendo, permitimos que cambie de elemento.
+		//Change element only when the player is not moving
 		if ((playerAnimator.GetBool ("isMoving") == false) && (currentElement != selectedElement)) {
 			playerAnimator.Play ("SummonElement");
 			currentElement = element;
-			ElementImage.sprite = sprites [currentElement - 1]; // -1 porque se indexa desde cero.
-			if (playerAnimator.GetBool ("hasTarget") == false)
+			ElementImage.sprite = sprites [currentElement - 1];  // -1 cos index starts from 0.
+            if (playerAnimator.GetBool ("hasTarget") == false)
 				playerAnimator.Play ("idle");
 			else
 				playerAnimator.Play ("combatPos");

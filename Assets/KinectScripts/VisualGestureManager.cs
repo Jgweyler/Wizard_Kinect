@@ -89,7 +89,7 @@ public class VisualGestureManager : MonoBehaviour
 	private const int cargar_hechizo = 7;
 	private const int lanzar = 8;
 
-	//Poner en esta variable el numero de gestos totales que hay.
+	//Number of gestures in our db.
 	private int n_gestures = 9;
 	private bool[] completed_gestures;
 
@@ -430,6 +430,8 @@ public class VisualGestureManager : MonoBehaviour
 	}
 
 	void LateUpdate(){
+
+        if (!isVisualGestureInitialized) return;
 		for (int i = 0; i < n_gestures; i++) {
 			switch (i) {
 			case girar_left:

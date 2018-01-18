@@ -3,11 +3,11 @@ using System.Collections;
 
 public class LookPlayer : MonoBehaviour {
 
-    private GameObject player; //Referencia del jugador.
-    private bool player_spotted = false; //Determina si este enemigo está viendo al jugador.
+    private GameObject player; //Player reference.
+    private bool player_spotted = false; //If the player has ben spotted by the enemy.
     private float speed = 12f;
-    private GameObject self; //Referencia al enemigo en sí. (Padre). Un enemigo está compuesto por dos Objectos vacíos con un collider cada uno. Esto es así
-                             //Porque Unity no deja asignar dos eventos onTrigger diferentes a un mismo objeto.
+    private GameObject self; //Parent of this gameObject. (Padre). An enemy has two empty gameObject and for each one there's a Collider.
+                             //We can't assign two colliders to the same gameObject.
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");

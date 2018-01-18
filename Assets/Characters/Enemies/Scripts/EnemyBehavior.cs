@@ -3,9 +3,9 @@ using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour {
 
-    private int element; //Elemento con el que está sintonizado este enemigo.
+    private int element;                //Current spell casted by the enemy.
 
-	public float spellVelocity = 1000f; //Velocidad del hechizo enemigo
+	public float spellVelocity = 1000f; //Spell speed of the enemy
 	public Rigidbody enemy_spell;
 	public Transform enemySpellTransform;
 	private PlayerHealth playerHealthScript;
@@ -13,7 +13,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     // Use this for initialization
     void Awake() {
-        element = Random.Range(1, SpellManager.getnElements()); //Inicializa de forma aleatoria el elemento con el que está sintonizado el objetivo.
+        element = Random.Range(1, SpellManager.getnElements()); //Initialize the element of the enemy randomly.
 		playerHealthScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
 		lookPlayerScript = gameObject.GetComponentInChildren<LookPlayer> ();
     }
@@ -33,15 +33,15 @@ public class EnemyBehavior : MonoBehaviour {
     }
 
 	public void attack(){
-		if (!playerHealthScript.isKO ()) { //Si el jugador no esta muerto y está avistado
+		if (!playerHealthScript.isKO ()) { //if the player is not dead and the player is spotted.
 			if (lookPlayerScript.isPlayerSpotted ()) {
 				Rigidbody spellInstance = Instantiate (enemy_spell, enemySpellTransform.position, enemySpellTransform.rotation) as Rigidbody;
 
-				// Seteamos su velocidad hacia la misma trayectoria que hacia donde está mirando el enemigo.
+				// We set the spell velocity vector to the player
 				spellInstance.velocity = spellVelocity * enemySpellTransform.forward;
 			}
 		} else {
-			Debug.Log ("El colega está muerto");
+			Debug.Log ("Player is dead :(");
 		}
 	}
 

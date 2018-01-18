@@ -150,6 +150,8 @@ public class SpeechManager : MonoBehaviour
 			{
 				throw new Exception("Speech recognition cannot be started, because KinectManager is missing or not initialized.");
 			}
+
+            if (sensorData == null || sensorData.sensorInterface == null) return;
 			
 			if(debugText != null)
 			{
@@ -243,13 +245,15 @@ public class SpeechManager : MonoBehaviour
 				debugText.GetComponent<GUIText>().text = ex.Message;
 		}
 
-		Image [] imagenes = GameObject.FindGameObjectWithTag ("HealthUI").GetComponentsInChildren<Image>();
+		/*Image [] imagenes = GameObject.FindGameObjectWithTag ("HealthUI").GetComponentsInChildren<Image>();
+
 
 		elementsSelection = new Image [SpellManager.getnElements()];
 
 		for (int i = 1; i <= SpellManager.getnElements(); i++){
-			elementsSelection[i -1] = imagenes[2 +i];
+			elementsSelection[i -1] = imagenes[2 + i];
 		}
+        */
 	}
 
 	void OnDestroy()

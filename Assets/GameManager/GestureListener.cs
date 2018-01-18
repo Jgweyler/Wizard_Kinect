@@ -10,8 +10,8 @@ public class GestureListener : MonoBehaviour, KinectGestures.GestureListenerInte
 	// private bool to track if progress message has been displayed
 	private bool progressDisplayed;
 	private float progressGestureTime;
-	private PlayerMovement playerMovementScript; // Referencia al jugador.
-	private MakeTarget playerTargetScript; //Referencia al script de fijacion de enemigos.
+	private PlayerMovement playerMovementScript; //Reference to player Movement script.
+	private MakeTarget playerTargetScript;       //Reference to MakeTarget script.
 
 	public void UserDetected(long userId, int userIndex)
 	{
@@ -110,7 +110,7 @@ public class GestureListener : MonoBehaviour, KinectGestures.GestureListenerInte
 	}
 	// Use this for initialization
 	void Start () {
-		//Obtenemos la referencia del jugador:
+		//Get player reference:
 		playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 		playerTargetScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MakeTarget>();
 	}

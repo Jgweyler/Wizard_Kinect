@@ -4,14 +4,14 @@ using System.Collections;
 public class Spell : MonoBehaviour
 {
 
-    private int elementType = 1; //Por defecto vamos a dejarlo como "fuego". Cuando inicialice el juego este parametro ira cambiando.
+    private int elementType = 1; //By default, de element type is 1 -> FIRE.
 
-    public float maxTimeLife = 2f; //Máximo tiempo de vida en el que el hechizo está dentro del juego. Si lo sobrepasa, se elimina del juego.
+    public float maxTimeLife = 2f; //Max LifeTime that a spell can be in game.
 
     void Start()
     {
         elementType = SpellManager.currentElement;
-        Destroy(gameObject, maxTimeLife); //Indicamos que si el objeto sobrepasa el tiempo de vida, este se destruya.
+        Destroy(gameObject, maxTimeLife); //If spell's lifetime is > maxLifetime  -> Destroy...
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class Spell : MonoBehaviour
     {
         if(other.gameObject.tag == "Enemy")
         {
-            Debug.Log("Te piléee!");
+            Debug.Log("Hit!!");
             int enemyElement = other.gameObject.GetComponent<EnemyBehavior>().getElement();
             int counterElement = SpellManager.getCounterElement(enemyElement);
             Debug.Log("Player: " + elementType + " Enemigo= " + enemyElement + " Counter: " + counterElement);
@@ -35,7 +35,7 @@ public class Spell : MonoBehaviour
 		if (MakeTarget.target == other.gameObject) {
 			MakeTarget.updateEnemySlider(other.gameObject.GetComponent<EnemyHealth>().getCurrentHealth());
 		}
-        //Comprobar si el hechizo colisiona con algo P.E, un enemigo, y realizar las operaciones oportunas.
+        //Check if spells collides with an enemy
     }
 
    

@@ -3,21 +3,18 @@ using System.Collections;
 
 public class CastSpell : MonoBehaviour {
 
-    private string spellButton;              // Botón usado para lanzar los hechizos.
-    private float currentCastForce;         // Fuerza con la que será lanzado el hechizo (para que cuando recorra el mapa se mueva mas rápido o más lento).
-    public float minCastForce = 15f;        //Fuerza mínima para lanzamiento de hechizos
-    public float maxCastForce = 30f;
-    public float maxChargeTime = 0.75f;     //Máximo tiempo en el que se puede aumentar/castear la fuerza del hechizo. (Manteniendo pulsado el boton de lanzamiento del mismo)
+    private string spellButton;             // Button used to launch spells.
+    private float currentCastForce;         // Force of the spell
+    public float minCastForce = 15f;        // Min cast force
+    public float maxCastForce = 30f;        // Max cast force
+    public float maxChargeTime = 0.75f;     // Maximum time which the player can increment the force of the spell
     private float chargeSpeed;
 	private Animator playerAnimator;
-    private bool casted;                    //Indica si un hechizo ya fue lanzado.
-	private bool casted_kinect;             //Indica si el hechizo ha sido cargado previamente con Kinect
-    public Rigidbody spell;                 //Contendrá el prefab del hechizo.
-    public Transform spellTransform; //Posición donde se crearán los diferentes hechizos.
-    //El mago dispone de diferentes tipos de hechizo
-
-	//Objetos que permiten combinar las animaciones de ataque y movimiento. (El usuario puede atacar y 
-	//moverse al mismo tiempo).
+    private bool casted;                    //If a spell has been casted.
+	private bool casted_kinect;             //If the spell has been casted with Kinect
+    public Rigidbody spell;                 //Rigidbody of the spell.
+    public Transform spellTransform;        //Position where the spells are going to be spawned
+    //IMPORTANT: THE PLAYER HAS DIFFERENT TYPES OF SPELLS (FIRE, WATER, EARTH, THUNDER...)
 
 
     void Awake() {
@@ -34,73 +31,54 @@ public class CastSpell : MonoBehaviour {
     }
     private void OnEnable()
     {
-        // Cuando el jugador entra en juego, debemos settear su fuerza minima de casteo.
+        // Set the cast force to the minimum.
         currentCastForce = minCastForce;
     }
 
     // Update is called once per frame
     void Update () {
-		/*
-		if (Input.GetButtonDown (spellButton)) {
-			playerAnimator.SetBool ("isCasting", true);
-		} else {
-			playerAnimator.SetBool ("isCasting", false);
-		}
-		*/
 		
-        // Si se ha alcanzado la fuerza máxima de casteo y el hechizo no se ha lanzado...
+        // if the current cast force is maximum and the spell hasn't been thrown yet
         if (currentCastForce >= maxCastForce && !casted)
         {
-            // ... usamos la máxima fuerza y lanzamos el hechizo.
+            //We use the maximum force and throw the spell
             currentCastForce = maxCastForce;
-			//playerAnimator.SetBool ("isLaunching", true);
-			//playerAnimator.PlayInFixedTime("launchSpell");
 			playerAnimator.Play ("launchSpell");
             Fire();
         }
-        // Si no, si el botón de casteo ha empezado a ser pulsado...
+        // Else, the player starts to cast a spell
         else if (Input.GetButtonDown(spellButton))
         {
-            // ... reseteamos el disparador de casteo y la fuerza del mismo.
+            // ... reset our casted boolean and the current force to the min.
             casted = false;
             currentCastForce = minCastForce;
         }
-        //Sino, Si el botón/movimiento sique pulsado/realizandose y el hechizo no ha sido lanzado
+        //Else, If the fire button has not been released, increment the cast force.
         else if (Input.GetButton(spellButton) && !casted)
         {
             // Incrementamos la fuerza de casteo
             currentCastForce += chargeSpeed * Time.deltaTime;
 
         }
-        //Si no, si el botón//movimiento de casteo ha sido presionado/realizado y el hechizo no ha sido lanzado
+        //Else, if the spell has not been thrown yet... fire!
         else if (Input.GetButtonUp(spellButton) && !casted)
         {
-            // ... lanzamos el hechizo.
-			//playerAnimator.SetBool ("isLaunching", true);
-			//playerAnimator.PlayInFixedTime("launchSpell");
+            // ... throw spell.
 			playerAnimator.Play ("launchSpell");;
             Fire();
         }
 
 
     }
-	/*
-	IEnumerator animateLaunch(){
-		while (playerAnimator.is) { // or whatever this property is called
-			yield return null;
-		}
-	}*/
-
 
     private void Fire()
     {
-        // Seteamos el disparador de casteo, así solo se lanzará el hechizo una vez
+        //set the casted value to true
         casted = true;
 
         SpellManager.launchSpell(currentCastForce);
-        // Volvemos a resetear la fuerza de lanzamiento del hechizo.
+        //reset the force of the spell
         currentCastForce = minCastForce;
-		//playerAnimator.SetBool ("isLaunching", false);
     }
 
 	public void setCasted_Kinect(bool cast_kinect)

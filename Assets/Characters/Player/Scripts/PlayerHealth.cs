@@ -6,28 +6,28 @@ public class PlayerHealth : MonoBehaviour {
 
     public float maxHealth = 100f;
     public float currentHealth;
-    public float flashSpeed = 5f; //Velocidad en la que flashea la imagen de daño (damagenImage) en la pantalla.
-    public Color flashColour = new Color(1f, 0f, 0f, 0.1f); //El color al que estará seteado la imagen de daño (damageImage) para flashear.
+    public float flashSpeed = 5f; //Velocity wich the damage Image flashes (When the player receive damage).
+    public Color flashColour = new Color(1f, 0f, 0f, 0.1f); //Set color red the damage image.
 
-    private PlayerMovement playerMovement;                              // Referencia al movimiento del personaje.
-    private CastSpell playerCastSpell;                                  // Referencia al casteo de hechizos del personaje.
-    private GameObject HUDCanvas;                                       //Referencia al canvas que tiene almacenados los elementos gráficos tales como la vida del personaje.
-    private Slider HealthSlider;                                        //Slider que representa la vida del persoanje
-    private Image damageImage;                                          //Imagen que será mostrada milésimas de segundo para indicar que el personaje fue dañado.
-	private Animator playerAnimator;									//Controlador de las animaciones del jugador.
+    private PlayerMovement playerMovement;                              // Reference to playerMovement script.
+    private CastSpell playerCastSpell;                                  // Reference to CastSpell script..
+    private GameObject HUDCanvas;                                       //HUD reference.
+    private Slider HealthSlider;                                        //HP health bar of the player
+    private Image damageImage;                                          //Damage Image. -> Appears when the player receives damage
+	private Animator playerAnimator;									//Animator reference to handle all the animations of the player.
 
-    private bool isDead;                                                // Si el personaje está muerto.
-    private bool damaged;                                               // Cuando el personaje recibe daño.
+    private bool isDead;                                                // Checks if player is dead
+    private bool damaged;                                               // Checks if player receives damage.
 
     void Awake() {
-        //Ponemos la vida al máximo cuando se inicialice el script
+        //Set the current health to MAX.
         currentHealth = maxHealth;
         isDead = false;
         damaged = false;
     }
 	// Use this for initialization
 	void Start () {
-        //Inicializamos todas las referencias.
+        //Set all necessary references.
         HUDCanvas = GameObject.FindGameObjectWithTag("HUDCanvas");  //Las referencias al HUDCanvas están en la función Start porque en Awake el HUDCanvas no ha sido
         damageImage = HUDCanvas.GetComponentInChildren<Image>();    //instanciado todavía.
         HealthSlider = HUDCanvas.GetComponentInChildren<Slider>();
@@ -39,16 +39,16 @@ public class PlayerHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        // Si el personaje ha sido dañado
+        // If the player has been damaged
         if (damaged)
         {
-            // ... asociamos el color de (flashColour) a la imagen de daño para que se vea reflejado en la pantalla.
+            // ... Set the flash color the de DamageImage.
             damageImage.color = flashColour;
         }
         // Si no
         else
         {
-            // ... transitamos para que el color de la pantalla vuelva a estar normal.
+            // ... we set the color of the screen to normal.
             damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
         }
 
@@ -76,7 +76,7 @@ public class PlayerHealth : MonoBehaviour {
 
 
     void Death(){
-        //Indicamos que el personaje está muerto y por lo tanto, no podrá atacar ni moverse.
+        //The player is dead :( -> Set bool and dead animation. Disable scripts.
         isDead = true;
 		playerAnimator.Play ("Die");
 
